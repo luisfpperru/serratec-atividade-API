@@ -8,5 +8,5 @@ import br.com.serratec.lojaserratec.model.Produto;
 
 
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
-	Optional<Produto> findById(Long id);
+	public Optional<Produto> findById(Long id);
 }

@@ -14,7 +14,7 @@ import com.sun.istack.NotNull;
 public class Cliente {
 	
 	     @Id
-	     @GeneratedValue(strategy=GenerationType.AUTO)
+	     @GeneratedValue(strategy=GenerationType.TABLE)
 	     private Long id;
 	     
 	     @NotNull

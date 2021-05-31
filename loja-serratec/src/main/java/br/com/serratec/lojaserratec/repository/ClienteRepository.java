@@ -9,7 +9,7 @@ import br.com.serratec.lojaserratec.model.Cliente;
 
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
-	Optional<Cliente> findById(Long id);
+	public Optional<Cliente> findById(Long id);
 	
-	List<Cliente> findByNome(String nome);
+	public List<Cliente> findByNome(String nome);
 }

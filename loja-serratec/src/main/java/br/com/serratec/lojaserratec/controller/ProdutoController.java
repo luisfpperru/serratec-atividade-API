@@ -33,7 +33,7 @@ public class ProdutoController {
 		return this._repositorioProduto.save(produto);
 	}
 	
-	@PutMapping(" /{id}")
+	@PutMapping("/{id}")
 	public Produto atualizar(@PathVariable(value = "id") Long id, @RequestBody Produto produto) {
 		produto.setId(id);
 		return this._repositorioProduto.save(produto);
@@ -43,6 +43,11 @@ public class ProdutoController {
 	public void deletar(@PathVariable(value = "id") Long id) {
 		this._repositorioProduto.deleteById(id);
 	}
+	
+	//@GetMapping("/{nome}")
+	//public List<Produto> obterPorNome(@PathVariable(value = "nome") String nome){
+	//	return _repositorioProduto.find;
+	//}
 	
 	
 }

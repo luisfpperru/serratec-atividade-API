@@ -33,7 +33,7 @@ public class ClienteController {
 		return this._repositorioCliente.save(cliente);
 	}
 	
-	@PutMapping(" /{id}")
+	@PutMapping("/{id}")
 	public Cliente atualizar(@PathVariable(value = "id") Long id, @RequestBody Cliente cliente) {
 		cliente.setId(id);
 		return this._repositorioCliente.save(cliente);
