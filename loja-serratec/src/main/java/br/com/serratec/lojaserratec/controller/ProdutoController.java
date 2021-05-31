@@ -1,6 +1,7 @@
 package br.com.serratec.lojaserratec.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +27,11 @@ public class ProdutoController {
 	public List<Produto> obter(){
 		return this._repositorioProduto.findAll();
 		
+	}
+	
+	@GetMapping("/nome/{nome}")
+	public Optional<Produto> obterPorNome(@PathVariable(value="nome") String nome){
+		return this._repositorioProduto.findByNome(nome);
 	}
 	
 	@PostMapping
