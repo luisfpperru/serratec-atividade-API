@@ -44,10 +44,5 @@ public class ProdutoController {
 		this._repositorioProduto.deleteById(id);
 	}
 	
-	//@GetMapping("/{nome}")
-	//public List<Produto> obterPorNome(@PathVariable(value = "nome") String nome){
-	//	return _repositorioProduto.find;
-	//}
-	
 	
 }
