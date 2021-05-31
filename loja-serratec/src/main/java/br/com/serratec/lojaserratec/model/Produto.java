@@ -1,11 +1,31 @@
 package br.com.serratec.lojaserratec.model;
 
-public class Produto {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+import com.sun.istack.NotNull;
+
+@Entity
+@Table(name="produto")
+public class Produto {
+		
+	
+		@Id
+		@GeneratedValue(strategy=GenerationType.AUTO)
 	    private Long id;
+		
+		@NotNull
 	    private String nome;
+		
+		@NotNull
 	    private Integer quantidade;
+		
+		@NotNull
 	    private Double valor;
+		
 	    private String observacao;
 		public Long getId() {
 			return id;
