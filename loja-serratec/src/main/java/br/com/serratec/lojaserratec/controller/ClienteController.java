@@ -43,4 +43,5 @@ public class ClienteController {
 	public void deletar(@PathVariable(value = "id") Long id) {
 		this._repositorioCliente.deleteById(id);
 	}
+	
 }
