@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,21 +36,35 @@ public class ProdutoController {
 		return this._repositorioProduto.findByNome(nome);
 	}
 	
-	@PostMapping
-	public Produto adicionar(@RequestBody Produto produto) {
-		return this._repositorioProduto.save(produto);
-	}
-	
-	@PutMapping("/{id}")
-	public Produto atualizar(@PathVariable(value = "id") Long id, @RequestBody Produto produto) {
-		produto.setId(id);
-		return this._repositorioProduto.save(produto);
-	}
-	
-	@DeleteMapping("/{id}")
-	public void deletar(@PathVariable(value = "id") Long id) {
-		this._repositorioProduto.deleteById(id);
-	}
-	
+    @PostMapping
+    public ResponseEntity<Produto> adicionar(@RequestBody Produto produto) {
+        var adicionado = this._repositorioProduto.save(produto);
+        return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Produto> atualizar(@PathVariable(value = "id") Long id, @RequestBody Produto produto) {
+        produto.setId(id);
+        try {
+        var atualizado = this._repositorioProduto.save(produto);
+        return new ResponseEntity<>(atualizado, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Produto> deletar(@PathVariable(value = "id") Long id) {
+        try {
+            this._repositorioProduto.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+            }
+            catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+    }
 	
 }
