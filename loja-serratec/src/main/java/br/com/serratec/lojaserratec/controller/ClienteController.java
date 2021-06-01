@@ -31,9 +31,20 @@ public class ClienteController {
 
     }
 	
+	@GetMapping("/id/{id}")
+	public ResponseEntity<Optional<Cliente>> obterPorId(@PathVariable(value="id") Long id){
+		var encontrado = this._repositorioCliente.findById(id);
+		if (encontrado.isEmpty())
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(encontrado, HttpStatus.OK);
+	}
+	
 	@GetMapping("/nome/{nome}")
-	public Optional<Cliente> obterPorNome(@PathVariable(value="nome") String nome){
-		return this._repositorioCliente.findByNome(nome);
+	public ResponseEntity<List<Cliente>> obterPorNome(@PathVariable(value="nome") String nome){
+		var encontrado = this._repositorioCliente.findByNome(nome);
+		if (encontrado.isEmpty())
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(encontrado, HttpStatus.OK);
 	}
 	
 
@@ -43,19 +54,17 @@ public class ClienteController {
         return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/id/{id}")
     public ResponseEntity<Cliente> atualizar(@PathVariable(value = "id") Long id, @RequestBody Cliente cliente) {
-        cliente.setId(id);
-        try {
+    	if (_repositorioCliente.findById(id).isPresent()) {
+    		cliente.setId(id);
             var atualizado = this._repositorioCliente.save(cliente);
             return new ResponseEntity<>(atualizado, HttpStatus.OK);
-            }
-            catch (Exception e) {
+        }else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/id/{id}")
     public ResponseEntity<Cliente> deletar(@PathVariable(value = "id") Long id) {
         try {
             this._repositorioCliente.deleteById(id);
