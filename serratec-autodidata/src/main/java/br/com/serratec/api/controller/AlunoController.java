@@ -34,8 +34,9 @@ import br.com.serratec.api.repository.AlunoRepository;
 		
 		@GetMapping("/id/{id}")
 		public ResponseEntity<Optional<Aluno>> obterPorId(@PathVariable(value="id") Long id){
-			var encontrado = this._repositorioAluno.findById(id);
-			return new ResponseEntity<>(encontrado, HttpStatus.OK);
+			verificarSeEstudanteExiste(id);
+			var procurado = _repositorioAluno.findById(id);
+			return new ResponseEntity<>(procurado,HttpStatus.OK);
 		}
 		
 		
@@ -47,27 +48,21 @@ import br.com.serratec.api.repository.AlunoRepository;
 
 	    @PutMapping("/id/{id}")
 	    public ResponseEntity<Aluno> atualizar(@PathVariable(value = "id") Long id, @RequestBody Aluno aluno) {
-	    	if (_repositorioAluno.findById(id).isPresent()) {
-	    		aluno.setId(id);
+				verificarSeEstudanteExiste(id);
+				aluno.setId(id);
 	            var atualizado = this._repositorioAluno.save(aluno);
 	            return new ResponseEntity<>(atualizado, HttpStatus.OK);
-	        }else
-	                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	    }
 
 	    @DeleteMapping("/id/{id}")
 	    public ResponseEntity<Aluno> deletar(@PathVariable(value = "id") Long id) {
-	        try {
+			    verificarSeEstudanteExiste(id);
 	            this._repositorioAluno.deleteById(id);
-	            return new ResponseEntity<>(HttpStatus.OK);
-	            }
-	            catch (Exception e) {
-	                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	            }
+	            return new ResponseEntity<>(HttpStatus.OK);       
 	    }
 		
 	    private void verificarSeEstudanteExiste(Long id) {
-	    	if (_repositorioAluno.findById(id)) 
+	    	if (_repositorioAluno.findById(id) == null) 
 	    		throw new NotFoundException("Estudante não encontrado(a) pelo ID:" + id);
 	    }
 }
