@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.serratec.api.exception.NotFoundException;
+import br.com.serratec.api.exceptions.NotFoundException;
 import br.com.serratec.api.model.Aluno;
 import br.com.serratec.api.repository.AlunoRepository;
 
@@ -33,10 +33,10 @@ import br.com.serratec.api.repository.AlunoRepository;
 	    }
 		
 		@GetMapping("/id/{id}")
-		public ResponseEntity<Optional<Aluno>> obterPorId(@PathVariable(value="id") Long id){
-			verificarSeEstudanteExiste(id);
-			var procurado = _repositorioAluno.findById(id);
-			return new ResponseEntity<>(procurado,HttpStatus.OK);
+		public Aluno obterPorId(@PathVariable(value="id") Long id){
+			var procurado = _repositorioAluno.findById(id)
+											 .orElseThrow( ()-> new NotFoundException("Estudante não encontrado(a) pelo ID:" + id));
+			return procurado;
 		}
 		
 		
@@ -47,22 +47,19 @@ import br.com.serratec.api.repository.AlunoRepository;
 	    }
 
 	    @PutMapping("/id/{id}")
-	    public ResponseEntity<Aluno> atualizar(@PathVariable(value = "id") Long id, @RequestBody Aluno aluno) {
-				verificarSeEstudanteExiste(id);
+	    public Aluno atualizar(@PathVariable(value = "id") Long id, @RequestBody Aluno aluno) {
+	    		_repositorioAluno.findById(id)
+	    						 .orElseThrow( ()-> new NotFoundException("Estudante não encontrado(a) pelo ID:" + id));
 				aluno.setId(id);
 	            var atualizado = this._repositorioAluno.save(aluno);
-	            return new ResponseEntity<>(atualizado, HttpStatus.OK);
+	            return atualizado;
 	    }
 
 	    @DeleteMapping("/id/{id}")
-	    public ResponseEntity<Aluno> deletar(@PathVariable(value = "id") Long id) {
-			    verificarSeEstudanteExiste(id);
+	    public void deletar(@PathVariable(value = "id") Long id) {
+    			_repositorioAluno.findById(id)
+    							 .orElseThrow( ()-> new NotFoundException("Estudante não encontrado(a) pelo ID:" + id));
 	            this._repositorioAluno.deleteById(id);
-	            return new ResponseEntity<>(HttpStatus.OK);       
 	    }
 		
-	    private void verificarSeEstudanteExiste(Long id) {
-	    	if (_repositorioAluno.findById(id) == null) 
-	    		throw new NotFoundException("Estudante não encontrado(a) pelo ID:" + id);
-	    }
 }
