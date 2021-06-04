@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.serratec.lojaserratec.model.Cliente;
 import br.com.serratec.lojaserratec.model.Produto;
 import br.com.serratec.lojaserratec.repository.ProdutoRepository;
 
@@ -31,9 +32,20 @@ public class ProdutoController {
 		
 	}
 	
+	@GetMapping("/id/{id}")
+	public ResponseEntity<Optional<Produto>> obterPorId(@PathVariable(value="id") Long id){
+		var encontrado = this._repositorioProduto.findById(id);
+		if (encontrado.isEmpty())
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(encontrado, HttpStatus.OK);
+	}
+	
 	@GetMapping("/nome/{nome}")
-	public Optional<Produto> obterPorNome(@PathVariable(value="nome") String nome){
-		return this._repositorioProduto.findByNome(nome);
+	public ResponseEntity<List<Produto>> obterPorNome(@PathVariable(value="nome") String nome){
+		var encontrado = this._repositorioProduto.findByNome(nome);
+		if (encontrado.isEmpty())
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(encontrado, HttpStatus.OK);
 	}
 	
     @PostMapping
@@ -42,20 +54,18 @@ public class ProdutoController {
         return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/id/{id}")
     public ResponseEntity<Produto> atualizar(@PathVariable(value = "id") Long id, @RequestBody Produto produto) {
-        produto.setId(id);
-        try {
-        var atualizado = this._repositorioProduto.save(produto);
-        return new ResponseEntity<>(atualizado, HttpStatus.OK);
-        }
-        catch (Exception e) {
+       	if (_repositorioProduto.findById(id).isPresent()) {
+       			produto.setId(id);
+        		var atualizado = this._repositorioProduto.save(produto);
+        		return new ResponseEntity<>(atualizado, HttpStatus.OK);
+        }else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
 
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/id/{id}")
     public ResponseEntity<Produto> deletar(@PathVariable(value = "id") Long id) {
         try {
             this._repositorioProduto.deleteById(id);
