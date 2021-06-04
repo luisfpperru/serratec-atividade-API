@@ -8,7 +8,6 @@ public class Endereco {
 	private String bairro;
 	private String cidade;
 	private Integer numero;
-	private String telefone;
 	private String complemento;
 	private String estado;
 	
@@ -58,14 +57,6 @@ public class Endereco {
 	
 	public void setNumero(Integer numero) {
 		this.numero = numero;
-	}
-	
-	public String getTelefone() {
-		return telefone;
-	}
-	
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
 	}
 	
 	public String getComplemento() {
