@@ -11,9 +11,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler{
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<StandardError> handleAnyException(NotFoundException e, HttpServletRequest request){
-    	StandardError error = new StandardError(HttpStatus.NOT_FOUND.value(),e.getMessage());
-    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
+    	@ExceptionHandler(NotFoundException.class)
+    	public ResponseEntity<StandardError> handleAnyException(NotFoundException e, HttpServletRequest request){
+    		StandardError error = new StandardError(HttpStatus.NOT_FOUND.value(),e.getMessage());
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    	}
 }
