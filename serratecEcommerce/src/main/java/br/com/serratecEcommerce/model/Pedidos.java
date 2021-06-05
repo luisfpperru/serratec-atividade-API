@@ -2,13 +2,12 @@ package br.com.serratecEcommerce.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import com.sun.istack.NotNull;
 
 @Entity
 @Table(name = "pedidos")
@@ -18,19 +17,19 @@ public class Pedidos {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private Long id;
 	
-	@NotNull
+	@Column( nullable = false)
 	private Integer numeroDoPedido;
 	
-	@NotNull
+	@Column( nullable = false)
 	private Double valorTotalDoPedido;
 	
-	@NotNull
+	@Column( nullable = false)
 	private Date dataDoPedido;
 	
-	@NotNull
+	@Column( nullable = false)
 	private String status;
 	
-	@NotNull
+	@Column( nullable = false)
 	private Long clienteId;
 	
 	public Long getId() {

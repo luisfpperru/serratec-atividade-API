@@ -20,7 +20,7 @@ import br.com.serratecEcommerce.repository.CategoriaRepository;
 
 
 @RestController
-@RequestMapping("/api/categoria")
+@RequestMapping("/api/categorias")
 public class CategoriaController {
 	
 	@Autowired

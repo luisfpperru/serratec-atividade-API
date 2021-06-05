@@ -19,7 +19,7 @@ import br.com.serratecEcommerce.repository.ClienteRepository;
 
 
 @RestController
-@RequestMapping("/api/cliente")
+@RequestMapping("/api/clientes")
 public class ClienteController {
 	
 	@Autowired

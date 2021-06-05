@@ -20,7 +20,7 @@ import br.com.serratecEcommerce.repository.EnderecoRepository;
 
 
 @RestController
-@RequestMapping("/api/endereco")
+@RequestMapping("/api/enderecos")
 public class EnderecoController {
 	
 	@Autowired

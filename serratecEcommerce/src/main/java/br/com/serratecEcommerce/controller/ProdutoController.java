@@ -18,7 +18,7 @@ import br.com.serratecEcommerce.model.Produto;
 import br.com.serratecEcommerce.repository.ProdutoRepository;
 
 @RestController
-@RequestMapping("/api/produto")
+@RequestMapping("/api/produtos")
 public class ProdutoController {
 	@Autowired
 	ProdutoRepository _repositorioProduto;

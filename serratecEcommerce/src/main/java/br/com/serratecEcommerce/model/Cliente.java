@@ -2,13 +2,12 @@ package br.com.serratecEcommerce.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import com.sun.istack.NotNull;
 
 @Entity
 @Table(name = "cliente")
@@ -18,19 +17,16 @@ public class Cliente {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private Long id;
 	
-	@NotNull
+	@Column( nullable = false)
 	private String email;
 	
-	@NotNull
-	private String username;
-	
-	@NotNull
+	@Column( nullable = false)
 	private String senha;
 	
-	@NotNull
+	@Column( nullable = false)
 	private String nome;
 	
-	@NotNull
+	@Column( length = 11, nullable = false)
 	private String cpfOuCnpj;
 	
 	private String telefone;
@@ -53,14 +49,6 @@ public class Cliente {
 	
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	
-	public String getUsername() {
-		return username;
-	}
-	
-	public void setUsername(String username) {
-		this.username = username;
 	}
 	
 	public String getSenha() {

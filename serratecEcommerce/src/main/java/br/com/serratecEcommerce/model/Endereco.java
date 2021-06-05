@@ -1,13 +1,11 @@
 package br.com.serratecEcommerce.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import com.sun.istack.NotNull;
-
 
 @Entity
 @Table(name = "endereco")
@@ -17,23 +15,23 @@ public class Endereco {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private Long id;
 	
-	@NotNull
+	@Column( nullable = false)
 	private String cep;
 	
-	@NotNull
+	@Column( nullable = false)
 	private String rua;
 	
-	@NotNull
+	@Column( nullable = false)
 	private String bairro;
 	
-	@NotNull
+	@Column( nullable = false)
 	private String cidade;
 	
 	private Integer numero;
 	
 	private String complemento;
 	
-	@NotNull
+	@Column( nullable = false)
 	private String estado;
 	
 	public Long getId() {
