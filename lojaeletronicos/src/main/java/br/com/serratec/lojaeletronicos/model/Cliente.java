@@ -2,16 +2,42 @@ package br.com.serratec.lojaeletronicos.model;
 
 import java.util.Date;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.springframework.stereotype.Repository;
+
+import com.sun.istack.NotNull;
+
+@Repository
+@Table(name = "cliente")
 public class Cliente {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotNull
 	private String email;
+	
+	@NotNull
 	private String username;
+	
+	@NotNull
 	private String senha;
+	
+	@NotNull
 	private String nome;
+	
+	@NotNull
 	private String cpfOuCnpj;
+	
 	private String telefone;
+	
 	private Date dataDeNascimento;
+	
 	private Long enderecoId;
 	
 	public Long getId() {

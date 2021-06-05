@@ -2,13 +2,35 @@ package br.com.serratec.lojaeletronicos.model;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.sun.istack.NotNull;
+
+@Entity
+@Table(name = "pedidos")
 public class Pedidos {
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotNull
 	private Integer numeroDoPedido;
+	
+	@NotNull
 	private Double valorTotalDoPedido;
+	
+	@NotNull
 	private Date dataDoPedido;
+	
+	@NotNull
 	private String status;
+	
+	@NotNull
 	private Long clienteId;
 	
 	public Long getId() {

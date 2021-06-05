@@ -1,14 +1,39 @@
 package br.com.serratec.lojaeletronicos.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.sun.istack.NotNull;
+
+
+@Entity
+@Table(name = "endereco")
 public class Endereco {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotNull
 	private String cep;
+	
+	@NotNull
 	private String rua;
+	
+	@NotNull
 	private String bairro;
+	
+	@NotNull
 	private String cidade;
+	
 	private Integer numero;
+	
 	private String complemento;
+	
+	@NotNull
 	private String estado;
 	
 	public Long getId() {

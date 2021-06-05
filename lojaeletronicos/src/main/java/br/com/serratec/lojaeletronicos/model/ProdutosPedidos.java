@@ -1,12 +1,32 @@
 package br.com.serratec.lojaeletronicos.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.sun.istack.NotNull;
+
+@Entity
+@Table(name = "produtosPedidos")
 public class ProdutosPedidos {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotNull
 	private Long produtoId;
+	
+	@NotNull
 	private Long pedidosId;
+	
+	@NotNull
 	private Integer quantidade;
-	private Double preço;
+	
+	@NotNull
+	private Double preco;
 	
 	public Long getId() {
 		return id;
@@ -40,12 +60,12 @@ public class ProdutosPedidos {
 		this.quantidade = quantidade;
 	}
 	
-	public Double getPreço() {
-		return preço;
+	public Double getPreco() {
+		return preco;
 	}
 	
-	public void setPreço(Double preço) {
-		this.preço = preço;
+	public void setPreco(Double preco) {
+		this.preco = preco;
 	}
 	
 }
