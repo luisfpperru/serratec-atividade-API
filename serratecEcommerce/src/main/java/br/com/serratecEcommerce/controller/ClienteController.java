@@ -3,8 +3,6 @@ package br.com.serratecEcommerce.controller;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,15 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.serratecEcommerce.model.Cliente;
-import br.com.serratecEcommerce.repository.ClienteRepository;
 
 
 @RestController
 @RequestMapping("/api/clientes")
 public class ClienteController {
-	
-	@Autowired
-	ClienteRepository _repositorioCliente;
 	
 	@GetMapping
 	public List<Cliente> obterTodos(){
