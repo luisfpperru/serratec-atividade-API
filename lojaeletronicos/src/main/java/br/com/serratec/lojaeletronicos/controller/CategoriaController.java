@@ -42,15 +42,15 @@ public class CategoriaController {
 	
 	 public Categoria atualizar(@PathVariable(value = "id") Long id, @RequestBody Categoria categoria) {
  		_repositorioCategoria.findById(id);
- 						 //.orElseThrow( ()-> new NotFoundException("Estudante não encontrado(a) pelo ID:" + id));
+ 						 //.orElseThrow( ()-> new NotFoundException("Categoria não encontrada pelo ID:" + id));
  		 categoria.setId(id);
          return this._repositorioCategoria.save(categoria);
- }
+	 }
 
 	 @DeleteMapping("/id/{id}")
 	 public void deletar(@PathVariable(value = "id") Long id) {
 			_repositorioCategoria.findById(id);
-							 //.orElseThrow( ()-> new NotFoundException("Estudante não encontrado(a) pelo ID:" + id));
+							 //.orElseThrow( ()-> new NotFoundException("Categoria não encontrada pelo ID:" + id));
          this._repositorioCategoria.deleteById(id);
- }
+	 }
 }
