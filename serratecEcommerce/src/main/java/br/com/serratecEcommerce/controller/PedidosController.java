@@ -1,4 +1,4 @@
-package br.com.serratec.lojaeletronicos.controller;
+package br.com.serratecEcommerce.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.serratec.lojaeletronicos.model.Pedidos;
-import br.com.serratec.lojaeletronicos.repository.PedidosRepository;
+import br.com.serratecEcommerce.model.Pedidos;
+import br.com.serratecEcommerce.repository.PedidosRepository;
+
+
 
 @RestController
 @RequestMapping("/api/pedidos")

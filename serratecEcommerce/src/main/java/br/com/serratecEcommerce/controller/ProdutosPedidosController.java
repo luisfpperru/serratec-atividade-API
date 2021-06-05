@@ -1,4 +1,4 @@
-package br.com.serratec.lojaeletronicos.controller;
+package br.com.serratecEcommerce.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import br.com.serratec.lojaeletronicos.model.ProdutosPedidos;
-import br.com.serratec.lojaeletronicos.repository.ProdutosPedidosRepository;
+
+import br.com.serratecEcommerce.model.ProdutosPedidos;
+import br.com.serratecEcommerce.repository.ProdutosPedidosRepository;
+
 
 public class ProdutosPedidosController {
 	@Autowired

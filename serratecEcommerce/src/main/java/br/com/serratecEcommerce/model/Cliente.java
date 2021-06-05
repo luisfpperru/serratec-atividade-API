@@ -1,4 +1,4 @@
-package br.com.serratec.lojaeletronicos.model;
+package br.com.serratecEcommerce.model;
 
 import java.util.Date;
 

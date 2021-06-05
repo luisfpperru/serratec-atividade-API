@@ -1,4 +1,4 @@
-package br.com.serratec.lojaeletronicos.model;
+package br.com.serratecEcommerce.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
