@@ -2,21 +2,20 @@ package br.com.serratecEcommerce.model;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.springframework.stereotype.Repository;
-
 import com.sun.istack.NotNull;
 
-@Repository
+@Entity
 @Table(name = "cliente")
 public class Cliente {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private Long id;
 	
 	@NotNull

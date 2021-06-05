@@ -18,8 +18,6 @@ import br.com.serratecEcommerce.model.Cliente;
 import br.com.serratecEcommerce.repository.ClienteRepository;
 
 
-
-
 @RestController
 @RequestMapping("/api/cliente")
 public class ClienteController {
