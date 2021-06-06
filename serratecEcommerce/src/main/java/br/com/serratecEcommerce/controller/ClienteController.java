@@ -55,7 +55,7 @@ public class ClienteController {
 	}
 	
 	@ApiOperation(value = "Atualiza os dados de cliente existente")
-	@PutMapping
+	@PutMapping("/id/{id}")
 	 public Cliente atualizar(@PathVariable(value = "id") Long id, @RequestBody Cliente cliente) {
          return _servicoCliente.atualizar(id, cliente);
 	 }

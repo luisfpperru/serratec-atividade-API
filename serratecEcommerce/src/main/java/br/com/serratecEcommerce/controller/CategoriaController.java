@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.serratecEcommerce.model.Categoria;
 import br.com.serratecEcommerce.service.CategoriaService;
-import br.com.serratecEcommerce.service.ClienteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -56,7 +55,7 @@ public class CategoriaController {
 	}
 	
 	@ApiOperation(value = "Atualiza uma categoria existente")
-	@PutMapping
+	@PutMapping("/id/{id}")
 	 public Categoria atualizar(@PathVariable(value = "id") Long id, @RequestBody Categoria categoria) {
          return _servicoCategoria.atualizar(id, categoria);
 	 }

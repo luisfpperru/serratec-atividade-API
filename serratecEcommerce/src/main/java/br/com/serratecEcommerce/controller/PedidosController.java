@@ -4,21 +4,19 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.serratecEcommerce.model.Pedidos;
-import br.com.serratecEcommerce.repository.PedidosRepository;
 import br.com.serratecEcommerce.service.PedidosService;
-import br.com.serratecEcommerce.service.ProdutoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -51,11 +49,12 @@ public class PedidosController {
 	}
 	
 	@ApiOperation(value = "Atualiza um pedido existente")
+	@PutMapping("/id/{id}")
 	 public Pedidos atualizar(@PathVariable(value = "id") Long id, @RequestBody Pedidos pedidos) {
          return _servicoPedidos.atualizar(id,pedidos);
 	 }
 
-	@ApiOperation(value = "Deleta um pedido existente")
+	 @ApiOperation(value = "Deleta um pedido existente")
 	 @DeleteMapping("/id/{id}")
 	 public void deletar(@PathVariable(value = "id") Long id) {
 		_servicoPedidos.deletar(id);
