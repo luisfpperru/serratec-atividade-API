@@ -1,5 +1,6 @@
 package br.com.serratecEcommerce.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.com.serratecEcommerce.model.Pedidos;
+import br.com.serratecEcommerce.model.exception.ResourceNotFoundException;
 import br.com.serratecEcommerce.repository.PedidosRepository;
 
 @Service
@@ -24,22 +26,26 @@ public class PedidosService {
 		return this._repositorioPedidos.findById(id);
 	}
 	
-	public ResponseEntity<Pedidos>  adicionar(Pedidos pedidos){
+	public ResponseEntity<Pedidos> adicionar(Pedidos pedidos){
 		pedidos.setId(null);
+		pedidos.setValorTotalDoPedido(this.calcularValorTotal(pedidos));
+		pedidos.setDataDoPedido(new Date());
 		var adicionado = this._repositorioPedidos.save(pedidos);
         return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
 	}
 	
 	 public Pedidos atualizar(Long id, Pedidos pedidos) {
- 		_repositorioPedidos.findById(id);
- 						 //.orElseThrow( ()-> new NotFoundException("Pedido não encontrado(a) pelo ID:" + id));
+ 		_repositorioPedidos.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Pedido não encontrado(a) pelo ID:" + id));
  		 pedidos.setId(id);
          return this._repositorioPedidos.save(pedidos);
 	 }
 
 	 public void deletar(Long id) {
-			_repositorioPedidos.findById(id);
-							 //.orElseThrow( ()-> new NotFoundException("Pedido não encontrado(a) pelo ID:" + id));
+			_repositorioPedidos.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Pedido não encontrado(a) pelo ID:" + id));
          this._repositorioPedidos.deleteById(id);
+	 }
+	 
+	 private double calcularValorTotal(Pedidos pedidos) {
+		 return 0.0;
 	 }
 }
