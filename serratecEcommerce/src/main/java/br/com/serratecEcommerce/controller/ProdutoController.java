@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.serratecEcommerce.model.Produto;
 import br.com.serratecEcommerce.repository.ProdutoRepository;
+import br.com.serratecEcommerce.service.ProdutoService;
+import br.com.serratecEcommerce.service.ProdutosPedidosService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -27,32 +29,35 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/api/produtos")
 public class ProdutoController {
 	
+	@Autowired
+	ProdutoService _servicoProduto;
+	
 	@ApiOperation(value = "Retorna uma lista com todos os produtos")
 	@GetMapping
 	public List<Produto> obterTodos(){
-		return obterTodos();
+		return _servicoProduto.obterTodos();
 	}
 
 	@ApiOperation(value = "Retorna um produto pelo ID")
 	@GetMapping("/{id}")
 	public Optional<Produto> obterPorId(@PathVariable(value = "id") Long id){
-		return obterPorId(id);
+		return _servicoProduto.obterPorId(id);
 	}
 	
 	@ApiOperation(value = "Adiciona um produto")
 	@PostMapping
 	public ResponseEntity<Produto> adicionar(@RequestBody Produto produto){
-        return adicionar(produto);
+        return _servicoProduto.adicionar(produto);
 	}
 	
 	@ApiOperation(value = "Atualiza um produto existente")
 	 public Produto atualizar(@PathVariable(value = "id") Long id, @RequestBody Produto produto) {
-         return atualizar(id, produto);
+         return _servicoProduto.atualizar(id, produto);
 	 }
 
 	@ApiOperation(value = "Deleta um produto existente")
 	 @DeleteMapping("/id/{id}")
 	 public void deletar(@PathVariable(value = "id") Long id) {
-			deletar(id);
+		_servicoProduto.deletar(id);
 	 }
 }

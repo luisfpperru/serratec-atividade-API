@@ -3,6 +3,7 @@ package br.com.serratecEcommerce.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.serratecEcommerce.model.Cliente;
+import br.com.serratecEcommerce.service.ClienteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -25,39 +27,42 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/api/clientes")
 public class ClienteController {
 	
+	@Autowired
+	ClienteService _servicoCliente;
+	
 	@ApiOperation(value = "Retorna uma lista com todos os clientes")
 	@GetMapping
 	public List<Cliente> obterTodos(){
-		return obterTodos();
+		return _servicoCliente.obterTodos();
 	}
 
 	@ApiOperation(value = "Retorna o cliente pelo ID")
 	@GetMapping("/id/{id}")
 	public Optional<Cliente> obterPorId(@PathVariable(value = "id") Long id){
-		return obterPorId(id);
+		return _servicoCliente.obterPorId(id);
 	}
 	
 	@ApiOperation(value = "Retorna o cliente pelo nome")
 	@GetMapping("/nome/{nome}")
 	public List<Cliente> obterPorNome(@PathVariable(value = "nome") String nome){
-		return obterPorNome(nome);
+		return _servicoCliente.obterPorNome(nome);
 	}
 	
 	@ApiOperation(value = "Adiciona um cliente")
 	@PostMapping
 	public ResponseEntity<Cliente> adicionar(@RequestBody Cliente cliente){
-        return adicionar(cliente);
+        return _servicoCliente.adicionar(cliente);
 	}
 	
 	@ApiOperation(value = "Atualiza os dados de cliente existente")
 	@PutMapping
 	 public Cliente atualizar(@PathVariable(value = "id") Long id, @RequestBody Cliente cliente) {
-         return atualizar(id, cliente);
+         return _servicoCliente.atualizar(id, cliente);
 	 }
 
      @ApiOperation(value = "Deleta a conta de um cliente existente")
 	 @DeleteMapping("/id/{id}")
 	 public void deletar(@PathVariable(value = "id") Long id) {
-			deletar(id);
+    	 _servicoCliente.deletar(id);
 	 }
 }

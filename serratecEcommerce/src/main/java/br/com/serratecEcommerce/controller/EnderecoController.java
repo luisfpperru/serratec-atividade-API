@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.serratecEcommerce.model.Endereco;
 import br.com.serratecEcommerce.repository.EnderecoRepository;
+import br.com.serratecEcommerce.service.EnderecoService;
+import br.com.serratecEcommerce.service.ProdutoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -27,32 +29,35 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/api/enderecos")
 public class EnderecoController {
 	
+	@Autowired
+	EnderecoService _servicoEndereco;
+	
 	@ApiOperation(value = "Retorna uma lista com todos os endereços")
 	@GetMapping
 	public List<Endereco> obterTodos(){
-		return obterTodos();
+		return _servicoEndereco.obterTodos();
 	}
 
 	@ApiOperation(value = "Retorna um endereço pelo ID")
 	@GetMapping("/{id}")
 	public Optional<Endereco> obterPorId(@PathVariable(value = "id") Long id){
-		return obterPorId(id);
+		return _servicoEndereco.obterPorId(id);
 	}
 	
 	@ApiOperation(value = "Adiciona um endereço")
 	@PostMapping
 	public ResponseEntity<Endereco>  adicionar(@RequestBody Endereco endereco){
-        return adicionar(endereco);
+        return _servicoEndereco.adicionar(endereco);
 	}
 	
 	@ApiOperation(value = "Atualiza um endereço existente")
 	public Endereco atualizar(@PathVariable(value = "id") Long id, @RequestBody Endereco endereco) {
-         return atualizar(id,endereco);
+         return _servicoEndereco.atualizar(id,endereco);
 	 }
 
 	@ApiOperation(value = "Deleta um endereço existente")
 	@DeleteMapping("/id/{id}")
 	public void deletar(@PathVariable(value = "id") Long id) {
-			deletar(id);
+		_servicoEndereco.deletar(id);
 	 }
 }

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.serratecEcommerce.model.Pedidos;
 import br.com.serratecEcommerce.repository.PedidosRepository;
+import br.com.serratecEcommerce.service.PedidosService;
+import br.com.serratecEcommerce.service.ProdutoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -27,32 +29,35 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/api/pedidos")
 public class PedidosController {
 	
+	@Autowired
+	PedidosService _servicoPedidos;
+	
 	@ApiOperation(value = "Retorna uma lista com todos os pedidos")
 	@GetMapping
 	public List<Pedidos> obterTodos(){
-		return obterTodos();
+		return _servicoPedidos.obterTodos();
 	}
 
 	@ApiOperation(value = "Retorna um pedido pelo ID")
 	@GetMapping("/{id}")
 	public Optional<Pedidos> obterPorId(@PathVariable(value = "id") Long id){
-		return obterPorId(id);
+		return _servicoPedidos.obterPorId(id);
 	}
 	
 	@ApiOperation(value = "Adiciona um pedido")
 	@PostMapping
 	public ResponseEntity<Pedidos>  adicionar(@RequestBody Pedidos pedidos){
-        return adicionar(pedidos);
+        return _servicoPedidos.adicionar(pedidos);
 	}
 	
 	@ApiOperation(value = "Atualiza um pedido existente")
 	 public Pedidos atualizar(@PathVariable(value = "id") Long id, @RequestBody Pedidos pedidos) {
-         return atualizar(id,pedidos);
+         return _servicoPedidos.atualizar(id,pedidos);
 	 }
 
 	@ApiOperation(value = "Deleta um pedido existente")
 	 @DeleteMapping("/id/{id}")
 	 public void deletar(@PathVariable(value = "id") Long id) {
-         deletar(id);
+		_servicoPedidos.deletar(id);
 	 }
 }
