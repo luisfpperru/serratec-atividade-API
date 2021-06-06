@@ -27,41 +27,32 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/api/enderecos")
 public class EnderecoController {
 	
-	@Autowired
-	EnderecoRepository _repositorioEndereco;
-	
 	@ApiOperation(value = "Retorna uma lista com todos os endereços")
 	@GetMapping
 	public List<Endereco> obterTodos(){
-		return this._repositorioEndereco.findAll();
+		return obterTodos();
 	}
 
 	@ApiOperation(value = "Retorna um endereço pelo ID")
 	@GetMapping("/{id}")
 	public Optional<Endereco> obterPorId(@PathVariable(value = "id") Long id){
-		return this._repositorioEndereco.findById(id);
+		return obterPorId(id);
 	}
 	
 	@ApiOperation(value = "Adiciona um endereço")
 	@PostMapping
 	public ResponseEntity<Endereco>  adicionar(@RequestBody Endereco endereco){
-		var adicionado = this._repositorioEndereco.save(endereco);
-        return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
+        return adicionar(endereco);
 	}
 	
 	@ApiOperation(value = "Atualiza um endereço existente")
 	public Endereco atualizar(@PathVariable(value = "id") Long id, @RequestBody Endereco endereco) {
- 		_repositorioEndereco.findById(id);
- 						 //.orElseThrow( ()-> new NotFoundException("Endereço não encontrado(a) pelo ID:" + id));
- 		 endereco.setId(id);
-         return this._repositorioEndereco.save(endereco);
+         return atualizar(id,endereco);
 	 }
 
 	@ApiOperation(value = "Deleta um endereço existente")
 	@DeleteMapping("/id/{id}")
 	public void deletar(@PathVariable(value = "id") Long id) {
-			_repositorioEndereco.findById(id);
-							 //.orElseThrow( ()-> new NotFoundException("Endereço não encontrado(a) pelo ID:" + id));
-         this._repositorioEndereco.deleteById(id);
+			deletar(id);
 	 }
 }

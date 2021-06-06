@@ -27,41 +27,32 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/api/pedidos")
 public class PedidosController {
 	
-	@Autowired
-	PedidosRepository _repositorioPedidos;
-	
 	@ApiOperation(value = "Retorna uma lista com todos os pedidos")
 	@GetMapping
 	public List<Pedidos> obterTodos(){
-		return this._repositorioPedidos.findAll();
+		return obterTodos();
 	}
 
 	@ApiOperation(value = "Retorna um pedido pelo ID")
 	@GetMapping("/{id}")
 	public Optional<Pedidos> obterPorId(@PathVariable(value = "id") Long id){
-		return this._repositorioPedidos.findById(id);
+		return obterPorId(id);
 	}
 	
 	@ApiOperation(value = "Adiciona um pedido")
 	@PostMapping
 	public ResponseEntity<Pedidos>  adicionar(@RequestBody Pedidos pedidos){
-		var adicionado = this._repositorioPedidos.save(pedidos);
-        return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
+        return adicionar(pedidos);
 	}
 	
 	@ApiOperation(value = "Atualiza um pedido existente")
 	 public Pedidos atualizar(@PathVariable(value = "id") Long id, @RequestBody Pedidos pedidos) {
- 		_repositorioPedidos.findById(id);
- 						 //.orElseThrow( ()-> new NotFoundException("Pedido não encontrado(a) pelo ID:" + id));
- 		 pedidos.setId(id);
-         return this._repositorioPedidos.save(pedidos);
+         return atualizar(id,pedidos);
 	 }
 
 	@ApiOperation(value = "Deleta um pedido existente")
 	 @DeleteMapping("/id/{id}")
 	 public void deletar(@PathVariable(value = "id") Long id) {
-			_repositorioPedidos.findById(id);
-							 //.orElseThrow( ()-> new NotFoundException("Pedido não encontrado(a) pelo ID:" + id));
-         this._repositorioPedidos.deleteById(id);
+         deletar(id);
 	 }
 }

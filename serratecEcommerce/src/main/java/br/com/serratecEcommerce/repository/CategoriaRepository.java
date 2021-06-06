@@ -9,5 +9,5 @@ import br.com.serratecEcommerce.model.Categoria;
 
 public interface CategoriaRepository extends JpaRepository<Categoria,Long>{
 	public Optional<Categoria> findById(Long id);
-	public List<Categoria> findByName(String nome);
+	public List<Categoria> findByNome(String nome);
 }

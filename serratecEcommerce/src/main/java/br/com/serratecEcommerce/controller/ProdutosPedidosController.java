@@ -26,41 +26,33 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api/produtosPedidos")
 public class ProdutosPedidosController {
-	@Autowired
-	ProdutosPedidosRepository _repositorioProdutosPedidos;
 	
 	@ApiOperation(value = "Retorna uma lista dos produtos pedidos")
 	@GetMapping
 	public List<ProdutosPedidos> obterTodos(){
-		return this._repositorioProdutosPedidos.findAll();
+		return obterTodos();
 	}
 
 	@ApiOperation(value = "Retorna um produto pedido pelo ID")
 	@GetMapping("/{id}")
 	public Optional<ProdutosPedidos> obterPorId(@PathVariable(value = "id") Long id){
-		return this._repositorioProdutosPedidos.findById(id);
+		return obterPorId(id);
 	}
 	
 	@ApiOperation(value = "Adiciona um produto a um pedido")
 	@PostMapping
 	public ResponseEntity<ProdutosPedidos> adicionar(@RequestBody ProdutosPedidos produtosPedidos){
-		var adicionado = this._repositorioProdutosPedidos.save(produtosPedidos);
-        return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
+        return adicionar(produtosPedidos);
 	}
 	
 	@ApiOperation(value = "Atualiza um produto de um pedido")
 	 public ProdutosPedidos atualizar(@PathVariable(value = "id") Long id, @RequestBody ProdutosPedidos produtosPedidos) {
- 		_repositorioProdutosPedidos.findById(id);
- 						 //.orElseThrow( ()-> new NotFoundException("Categoria não encontrada pelo ID:" + id));
- 		produtosPedidos.setId(id);
-         return this._repositorioProdutosPedidos.save(produtosPedidos);
+         return atualizar(id,produtosPedidos);
 	 }
 
 	@ApiOperation(value = "Retira um produto de um pedido")
 	 @DeleteMapping("/id/{id}")
 	 public void deletar(@PathVariable(value = "id") Long id) {
-			_repositorioProdutosPedidos.findById(id);
-							 //.orElseThrow( ()-> new NotFoundException("Categoria não encontrada pelo ID:" + id));
-         this._repositorioProdutosPedidos.deleteById(id);
+			deletar(id);
 	 }
 }

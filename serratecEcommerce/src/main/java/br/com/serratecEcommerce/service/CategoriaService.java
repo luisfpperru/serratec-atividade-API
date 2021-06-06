@@ -26,7 +26,7 @@ public class CategoriaService {
 	}
 	
 	public List<Categoria> obterPorNome(String nome){
-		return this._repositorioCategoria.findByName(nome);
+		return this._repositorioCategoria.findByNome(nome);
 	}
 	
 	public ResponseEntity<Categoria> adicionar(Categoria categoria) {
@@ -36,15 +36,13 @@ public class CategoriaService {
 	}
 	
 	 public Categoria atualizar(Long id,Categoria categoria) {
- 		_repositorioCategoria.findById(id);
- 						 //.orElseThrow( ()-> new NotFoundException("Cliente não encontrado(a) pelo ID:" + id));
+ 		//_repositorioCategoria.findById(id).orElseThrow( ()-> new NotFoundException("Cliente não encontrado(a) pelo ID:" + id));
  		 categoria.setId(id);
          return this._repositorioCategoria.save(categoria);
 	 }
 
 	 public void deletar(Long id) {
-			_repositorioCategoria.findById(id);
-							 //.orElseThrow( ()-> new NotFoundException("Cliente não encontrado(a) pelo ID:" + id));
+			//_repositorioCategoria.findById(id).orElseThrow( ()-> new NotFoundException("Cliente não encontrado(a) pelo ID:" + id));
          this._repositorioCategoria.deleteById(id);
 	 }
 }

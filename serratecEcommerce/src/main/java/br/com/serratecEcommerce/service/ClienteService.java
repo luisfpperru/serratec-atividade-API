@@ -20,14 +20,14 @@ public class ClienteService {
 	
 	public List<Cliente> obterTodos(){
 		return this._repositorioCliente.findAll();
-		}
+	}
 	
 	public Optional<Cliente> obterPorId(Long id){
 		return this._repositorioCliente.findById(id);
 	}
 	
 	public List<Cliente> obterPorNome(String nome){
-		return this._repositorioCliente.findByName(nome);
+		return this._repositorioCliente.findByNome(nome);
 	}
 	
 	public ResponseEntity<Cliente> adicionar(Cliente cliente) {
