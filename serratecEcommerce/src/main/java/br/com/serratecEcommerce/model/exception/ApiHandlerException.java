@@ -11,9 +11,6 @@ import br.com.serratecEcommerce.error.ErrorMessage;
 @ControllerAdvice
 public class ApiHandlerException {
 
-	/**
-	 * Metodo responsavel para tratar qualquer exception do tipo ResourceNotFoundException lançada 
-	 * em todo o projeto. */
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<?> handlerResourceNotFoundException(ResourceNotFoundException exception){
 		
@@ -28,9 +25,6 @@ public class ApiHandlerException {
 		return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
 	}
 	
-	/**
-	 * Metodo responsavel para tratar qualquer exception do tipo ResourceBadRequestException lançada 
-	 * em todo o projeto. */
 	@ExceptionHandler(ResourceBadRequestException.class)
 	public ResponseEntity<?> handlerResourceBadRequestException(ResourceBadRequestException exception){
 		ErrorMessage errorMessage = new ErrorMessage(
@@ -43,9 +37,18 @@ public class ApiHandlerException {
 		return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
 	}
 	
-	/**
-	 * Metodo responsavel para tratar qualquer exception do tipo Exception lançada 
-	 * em todo o projeto. */
+	@ExceptionHandler(ResourceUnauthorizedException.class)
+	public ResponseEntity<?> handlerResourceUnauthorizedException(ResourceBadRequestException exception){
+		ErrorMessage errorMessage = new ErrorMessage(
+				"Unauthorized",
+				HttpStatus.UNAUTHORIZED.value(),
+				exception.getMessage(),
+				exception.getClass().getName(),
+				new Date().getTime());
+		
+		return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
+	}
+	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<?> handlerInternalServerError(Exception exception){
 		ErrorMessage errorMessage = new ErrorMessage(

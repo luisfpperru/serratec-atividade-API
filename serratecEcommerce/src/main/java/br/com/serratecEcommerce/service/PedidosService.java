@@ -28,7 +28,7 @@ public class PedidosService {
 	
 	public ResponseEntity<Pedidos> adicionar(Pedidos pedidos){
 		pedidos.setId(null);
-		pedidos.setValorTotalDoPedido(this.calcularValorTotal(pedidos));
+		//pedidos.setValorTotalDoPedido(this.calcularValorTotal(pedidos));
 		pedidos.setDataDoPedido(new Date());
 		var adicionado = this._repositorioPedidos.save(pedidos);
         return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
@@ -44,8 +44,9 @@ public class PedidosService {
 			_repositorioPedidos.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Pedido não encontrado(a) pelo ID:" + id));
          this._repositorioPedidos.deleteById(id);
 	 }
-	 
+	 /*
 	 private double calcularValorTotal(Pedidos pedidos) {
 		 return 0.0;
 	 }
+	 */
 }

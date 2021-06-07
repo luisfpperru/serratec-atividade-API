@@ -1,5 +1,6 @@
 package br.com.serratecEcommerce.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -19,7 +20,7 @@ public class Pedidos {
 	
 	@Column( nullable = false)
 	private Integer numeroDoPedido;
-	
+		
 	@Column( nullable = false)
 	private Double valorTotalDoPedido;
 	
@@ -32,6 +33,16 @@ public class Pedidos {
 	@Column( nullable = false)
 	private Long clienteId;
 	
+	private ArrayList<Produto> produtos = new ArrayList<Produto>();
+	
+	public ArrayList<Produto> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(ArrayList<Produto> produtos) {
+		this.produtos = produtos;
+	}
+
 	public Long getId() {
 		return id;
 	}
