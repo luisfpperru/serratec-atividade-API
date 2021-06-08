@@ -1,5 +1,6 @@
 package br.com.serratecEcommerce.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -10,13 +11,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.com.serratecEcommerce.model.Pedidos;
+import br.com.serratecEcommerce.model.email.MensagemEmail;
+import br.com.serratecEcommerce.model.exception.ResourceBadRequestException;
 import br.com.serratecEcommerce.model.exception.ResourceNotFoundException;
 import br.com.serratecEcommerce.repository.PedidosRepository;
 
 @Service
 public class PedidosService {
+	
 	@Autowired
 	private PedidosRepository _repositorioPedidos;
+	
+	@Autowired 
+	private EmailService _serviceEmail;
 	
 	public List<Pedidos> obterTodos(){
 		return this._repositorioPedidos.findAll();
@@ -35,9 +42,22 @@ public class PedidosService {
 	}
 	
 	 public Pedidos atualizar(Long id, Pedidos pedidos) {
- 		_repositorioPedidos.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Pedido não encontrado(a) pelo ID:" + id));
- 		 pedidos.setId(id);
-         return this._repositorioPedidos.save(pedidos);
+ 		var pedidosAtual = _repositorioPedidos.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Pedido não encontrado(a) pelo ID:" + id));
+ 		if (pedidosAtual.getStatus() == "finalizado" || pedidos.getStatus() == "Finalizado") {
+ 			throw new ResourceBadRequestException("O usuário está tentando modificar um pedido já finalizado.");
+		 }
+ 		if (pedidos.getStatus() == "finalizado" || pedidos.getStatus() == "Finalizado") {
+ 			var destinatarios = new ArrayList<String>();
+ 			destinatarios.add("serratecdev@gmail.com");
+ 			destinatarios.add("emaildocliente");
+ 			var email  = new MensagemEmail("Sua compra foi finalizada com sucesso!",
+ 										   "Data de entrega: dd-mm-AAAA, Seu carrinho: XXXX, Valor Total da sua compra: " + pedidos.getValorTotalDoPedido(),
+ 										   "Serratec Ecommerce <serratecdev@gmail.com>",
+ 										   destinatarios);
+ 			_serviceEmail.enviarEmail(email);
+ 		}
+ 		pedidos.setId(id); 			 
+ 		return this._repositorioPedidos.save(pedidos);
 	 }
 
 	 public void deletar(Long id) {
