@@ -44,7 +44,7 @@ public class EnderecoController {
 	
 	@ApiOperation(value = "Adiciona um endereço")
 	@PostMapping
-	public ResponseEntity<Endereco>  adicionar(@RequestBody Endereco endereco){
+	public ResponseEntity<Endereco> adicionar(@RequestBody Endereco endereco){
         return _servicoEndereco.adicionar(endereco);
 	}
 	

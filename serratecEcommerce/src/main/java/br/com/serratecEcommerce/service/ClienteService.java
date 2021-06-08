@@ -18,6 +18,7 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository _repositorioCliente;
 	
+	
 	public List<Cliente> obterTodos(){
 		return this._repositorioCliente.findAll();
 	}
@@ -48,4 +49,5 @@ public class ClienteService {
 							 //.orElseThrow( ()-> new NotFoundException("Cliente não encontrado(a) pelo ID:" + id));
          this._repositorioCliente.deleteById(id);
 	 }
+	 
 }
