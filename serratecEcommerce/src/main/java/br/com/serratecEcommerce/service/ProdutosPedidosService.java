@@ -50,6 +50,6 @@ public class ProdutosPedidosService {
 			 if (produtosPedidos.getQuantidade() < 0)
 				 throw new ResourceBadRequestException("A quantidade desejada é negativa!");
 			 if (produtosPedidos.getPreco() < 0)
-				 throw new ResourceBadRequestException("O preço total do produto é negativo!");
+				 throw new ResourceBadRequestException("O preço do produto é negativo!");
 		 }
 }

@@ -11,8 +11,9 @@ import javax.persistence.Table;
 @Table(name="aulas")
 public class Aula {
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.TABLE)
 	Long id;
+	@Column(nullable = false)
 	String descricao;
 	@Column(nullable = false)
 	Integer cargaHoraria;

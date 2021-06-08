@@ -2,6 +2,7 @@ package br.com.serratec.cursoautodidata.model;
 
 import java.util.ArrayList;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,8 +13,9 @@ import javax.persistence.Table;
 @Table(name="cursos")
 public class Curso {
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.TABLE)
 	Long id;
+	@Column(nullable = false)
 	String descricao;
 	ArrayList<Modulo> listaDeModulos;
 	ArrayList<Aluno> listaDeAlunos;

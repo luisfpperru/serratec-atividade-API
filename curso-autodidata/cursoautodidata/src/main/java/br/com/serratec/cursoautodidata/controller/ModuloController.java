@@ -1,7 +1,6 @@
 package br.com.serratec.cursoautodidata.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,15 +34,9 @@ public class ModuloController {
     }
 
     @ApiOperation(value = "Retorna o Modulo pelo ID")
-    @GetMapping("/id/{id}")
-    public Optional<Modulo> obterPorId(@PathVariable(value = "id") Long id){
+    @GetMapping("/{id}")
+    public Modulo obterPorId(@PathVariable(value = "id") Long id){
         return _servicoModulo.obterPorId(id);
-    }
-
-    @ApiOperation(value = "Retorna o Modulo pelo nome")
-    @GetMapping("/nome/{nome}")
-    public List<Modulo> obterPorNome(@PathVariable(value = "nome") String nome){
-        return _servicoModulo.obterPorNome(nome);
     }
 
     @ApiOperation(value = "Adiciona um Modulo")

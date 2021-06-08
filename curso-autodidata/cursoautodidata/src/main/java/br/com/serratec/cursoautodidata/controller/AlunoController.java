@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin(origins = "*")
 @Api(value = "API REST Serratec Curso Autodidata - Aluno")
 @RestController
-@RequestMapping("/api/Alunos")
+@RequestMapping("/api/alunos")
 public class AlunoController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class AlunoController {
 
     @ApiOperation(value = "Retorna o Aluno pelo ID")
     @GetMapping("/id/{id}")
-    public Optional<Aluno> obterPorId(@PathVariable(value = "id") Long id){
+    public Aluno obterPorId(@PathVariable(value = "id") Long id){
         return _servicoAluno.obterPorId(id);
     }
 

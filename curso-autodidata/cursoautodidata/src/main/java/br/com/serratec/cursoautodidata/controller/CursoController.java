@@ -1,7 +1,6 @@
 package br.com.serratec.cursoautodidata.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,7 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin(origins = "*")
 @Api(value = "API REST Serratec Curso Autodidata - Curso")
 @RestController
-@RequestMapping("/api/Cursos")
+@RequestMapping("/api/cursos")
 public class CursoController {
 
     @Autowired
@@ -35,15 +34,9 @@ public class CursoController {
     }
 
     @ApiOperation(value = "Retorna o Curso pelo ID")
-    @GetMapping("/id/{id}")
-    public Optional<Curso> obterPorId(@PathVariable(value = "id") Long id){
+    @GetMapping("/{id}")
+    public Curso obterPorId(@PathVariable(value = "id") Long id){
         return _servicoCurso.obterPorId(id);
-    }
-
-    @ApiOperation(value = "Retorna o Curso pelo nome")
-    @GetMapping("/nome/{nome}")
-    public List<Curso> obterPorNome(@PathVariable(value = "nome") String nome){
-        return _servicoCurso.obterPorNome(nome);
     }
 
     @ApiOperation(value = "Adiciona um Curso")

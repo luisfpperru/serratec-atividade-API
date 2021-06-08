@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 public class Aluno {
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.TABLE)
 	Long id;
 	@Column(nullable = false)
 	String nome;
