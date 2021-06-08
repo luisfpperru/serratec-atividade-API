@@ -1,0 +1,5 @@
+package br.com.serratec.cursoautodidata.service;
+
+public class AulaService {
+
+}
