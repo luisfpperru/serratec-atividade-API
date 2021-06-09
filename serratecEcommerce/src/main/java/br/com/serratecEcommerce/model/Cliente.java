@@ -2,11 +2,14 @@ package br.com.serratecEcommerce.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -33,7 +36,9 @@ public class Cliente {
 	
 	private Date dataDeNascimento;
 	
-	private Long enderecoId;
+	@OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "endereco_id")
+	private Endereco endereco;
 	
 	public Long getId() {
 		return id;
@@ -91,12 +96,12 @@ public class Cliente {
 		this.dataDeNascimento = dataDeNascimento;
 	}
 	
-	public Long getEnderecoId() {
-		return enderecoId;
+	public Endereco getEndereco() {
+		return endereco;
 	}
 	
-	public void setEnderecoId(Long enderecoId) {
-		this.enderecoId = enderecoId;
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}	
 	
 }

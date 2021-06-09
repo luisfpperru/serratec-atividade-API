@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import br.com.serratecEcommerce.model.EnderecoCep;
+import br.com.serratecEcommerce.model.exception.ResourceNotFoundException;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -16,9 +17,6 @@ public class CepService {
 	private WebClient cepWebClient;
 	
 	public EnderecoCep obterEnderecoPorCep(String cep) {
-		
-		
-		try {
 			
 			// Isso aqui acontece de forma asyncrona, de form async
 			Mono<EnderecoCep> monoEndereco = this.cepWebClient
@@ -30,13 +28,8 @@ public class CepService {
 			// Aqui eu poderia tbm me comunicar com outras apis simultaneamente.
 			
 			var endereco = monoEndereco.block(); // Fica aguardando o retorno da api e devolve o body obtido.
-			
+			if (endereco.equals(null))
+				throw new ResourceNotFoundException("O CEP não foi encontrado!");
 			return endereco;
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new EnderecoCep();
-		}
-
 	}
 }

@@ -33,6 +33,7 @@ public class EnderecoService {
 	}
 	
 	public ResponseEntity<Endereco> adicionar(Endereco endereco){
+ 		this.autocompletarEndereco(endereco);
 		this.validarEndereco(endereco);
 		endereco.setId(null);
 		var adicionado = this._repositorioEndereco.save(endereco);
@@ -41,6 +42,7 @@ public class EnderecoService {
 	
 	public Endereco atualizar(Long id, Endereco endereco) {
  		_repositorioEndereco.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Endereço não encontrado(a) pelo ID:" + id));
+ 		this.autocompletarEndereco(endereco);
  		this.validarEndereco(endereco);
  		 endereco.setId(id);
          return this._repositorioEndereco.save(endereco);
@@ -62,6 +64,20 @@ public class EnderecoService {
 			if (!endereco.getComplemento().equals(enderecoCorreto.getComplemento()) )
 				throw new ResourceBadRequestException("O complemento não conferi com seu CEP!");
 			if (!endereco.getEstado().equals(enderecoCorreto.getUf()) )
-				throw new ResourceBadRequestException("O estado não conferi com seu CEP!");		
+				throw new ResourceBadRequestException("O estado não conferi com seu CEP!");	
+		}
+	 
+	 	private void autocompletarEndereco(Endereco endereco) {
+			EnderecoCep enderecoCorreto = servicoCep.obterEnderecoPorCep(endereco.getCep());
+			if (endereco.getRua() == null ) 
+				endereco.setRua(enderecoCorreto.getLogradouro());
+			if (endereco.getBairro() == null)
+				endereco.setBairro(enderecoCorreto.getBairro());
+			if (endereco.getCidade() == null )
+				endereco.setCidade(enderecoCorreto.getLocalidade());
+			if (endereco.getComplemento() == null)
+				endereco.setComplemento(enderecoCorreto.getComplemento());
+			if (endereco.getEstado() == null )
+				endereco.setEstado(enderecoCorreto.getUf());
 		}
 }
