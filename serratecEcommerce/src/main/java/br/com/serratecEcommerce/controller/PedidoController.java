@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.serratecEcommerce.model.Pedidos;
-import br.com.serratecEcommerce.service.PedidosService;
+import br.com.serratecEcommerce.model.Pedido;
+import br.com.serratecEcommerce.service.PedidoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -25,38 +25,38 @@ import io.swagger.annotations.ApiOperation;
 @Api(value = "API REST Serratec E-Commerce - PEDIDOS")
 @RestController
 @RequestMapping("/api/pedidos")
-public class PedidosController {
+public class PedidoController {
 	
 	@Autowired
-	PedidosService _servicoPedidos;
+	PedidoService _servicoPedido;
 	
 	@ApiOperation(value = "Retorna uma lista com todos os pedidos")
 	@GetMapping
-	public List<Pedidos> obterTodos(){
-		return _servicoPedidos.obterTodos();
+	public List<Pedido> obterTodos(){
+		return _servicoPedido.obterTodos();
 	}
 
 	@ApiOperation(value = "Retorna um pedido pelo ID")
-	@GetMapping("/{id}")
-	public Optional<Pedidos> obterPorId(@PathVariable(value = "id") Long id){
-		return _servicoPedidos.obterPorId(id);
+	@GetMapping("/id/{id}")
+	public Optional<Pedido> obterPorId(@PathVariable(value = "id") Long id){
+		return _servicoPedido.obterPorId(id);
 	}
 	
 	@ApiOperation(value = "Adiciona um pedido")
 	@PostMapping
-	public ResponseEntity<Pedidos>  adicionar(@RequestBody Pedidos pedidos){
-        return _servicoPedidos.adicionar(pedidos);
+	public ResponseEntity<Pedido>  adicionar(@RequestBody Pedido pedidos){
+        return _servicoPedido.adicionar(pedidos);
 	}
 	
 	@ApiOperation(value = "Atualiza um pedido existente")
 	@PutMapping("/id/{id}")
-	 public Pedidos atualizar(@PathVariable(value = "id") Long id, @RequestBody Pedidos pedidos) {
-         return _servicoPedidos.atualizar(id,pedidos);
+	 public Pedido atualizar(@PathVariable(value = "id") Long id, @RequestBody Pedido pedidos) {
+         return _servicoPedido.atualizar(id,pedidos);
 	 }
 
 	 @ApiOperation(value = "Deleta um pedido existente")
 	 @DeleteMapping("/id/{id}")
 	 public void deletar(@PathVariable(value = "id") Long id) {
-		_servicoPedidos.deletar(id);
+		_servicoPedido.deletar(id);
 	 }
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.com.serratecEcommerce.model.Categoria;
+import br.com.serratecEcommerce.model.exception.ResourceNotFoundException;
 import br.com.serratecEcommerce.repository.CategoriaRepository;
 
 @Service
@@ -36,13 +37,13 @@ public class CategoriaService {
 	}
 	
 	 public Categoria atualizar(Long id,Categoria categoria) {
- 		//_repositorioCategoria.findById(id).orElseThrow( ()-> new NotFoundException("Cliente não encontrado(a) pelo ID:" + id));
+ 		_repositorioCategoria.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Categoria não encontrada pelo ID:" + id));
  		 categoria.setId(id);
          return this._repositorioCategoria.save(categoria);
 	 }
 
 	 public void deletar(Long id) {
-			//_repositorioCategoria.findById(id).orElseThrow( ()-> new NotFoundException("Cliente não encontrado(a) pelo ID:" + id));
+		 _repositorioCategoria.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Categoria não encontrada pelo ID:" + id));
          this._repositorioCategoria.deleteById(id);
 	 }
 }

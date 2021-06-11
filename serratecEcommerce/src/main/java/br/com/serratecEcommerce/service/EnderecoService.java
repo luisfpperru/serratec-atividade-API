@@ -58,13 +58,13 @@ public class EnderecoService {
 			if (!endereco.getRua().equals(enderecoCorreto.getLogradouro()) ) 
 				throw new ResourceBadRequestException("A rua não conferi com seu CEP!");
 			if (!endereco.getBairro().equals(enderecoCorreto.getBairro()) )
-				throw new ResourceBadRequestException("O bairro não conferi com seu CEP!");
+				throw new ResourceBadRequestException("O bairro não confere com seu CEP!");
 			if (!endereco.getCidade().equals(enderecoCorreto.getLocalidade()) )
-				throw new ResourceBadRequestException("A cidade não conferi com seu CEP!");
+				throw new ResourceBadRequestException("A cidade não confere com seu CEP!");
 			if (!endereco.getComplemento().equals(enderecoCorreto.getComplemento()) )
-				throw new ResourceBadRequestException("O complemento não conferi com seu CEP!");
+				throw new ResourceBadRequestException("O complemento não confere com seu CEP!");
 			if (!endereco.getEstado().equals(enderecoCorreto.getUf()) )
-				throw new ResourceBadRequestException("O estado não conferi com seu CEP!");	
+				throw new ResourceBadRequestException("O estado não confere com seu CEP!");	
 		}
 	 
 	 	private void autocompletarEndereco(Endereco endereco) {

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class Categoria {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.TABLE)
 	private Long id;
 	
 	@Column( nullable = false)

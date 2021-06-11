@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.com.serratecEcommerce.model.Produto;
 import br.com.serratecEcommerce.service.ProdutoService;
@@ -37,7 +38,7 @@ public class ProdutoController {
 	}
 
 	@ApiOperation(value = "Retorna um produto pelo ID")
-	@GetMapping("/{id}")
+	@GetMapping("/id/{id}")
 	public Optional<Produto> obterPorId(@PathVariable(value = "id") Long id){
 		return _servicoProduto.obterPorId(id);
 	}
@@ -46,6 +47,12 @@ public class ProdutoController {
 	@PostMapping
 	public ResponseEntity<Produto> adicionar(@RequestBody Produto produto){
         return _servicoProduto.adicionar(produto);
+	}
+	
+	@ApiOperation(value = "Adiciona uma imagem ao produto")
+	@PostMapping("/imagem/{id}")
+	public ResponseEntity<Produto> adicionarImagemAoProduto(@PathVariable(value = "id") Long id,@RequestBody MultipartFile imagem){
+        return _servicoProduto.adicionarImagemAoProduto(id, imagem);
 	}
 	
 	@ApiOperation(value = "Atualiza um produto existente")

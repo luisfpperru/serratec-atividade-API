@@ -1,12 +1,16 @@
 package br.com.serratecEcommerce.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -14,7 +18,7 @@ import javax.persistence.Table;
 public class Produto {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.TABLE)
 	private Long id;
 	
 	@Column( nullable = false)
@@ -29,14 +33,16 @@ public class Produto {
 	@Column( nullable = false)
 	private Integer quantidadeEmEstoque;
 	
-	@Column( nullable = false)
 	private Date dataDeCadastroDoProduto;
 	
-	@Column( nullable = false)
 	private String imagem;
 	
-	@Column( nullable = false)
-	private Long categoriaId;
+	@ManyToMany(mappedBy = "produtos")
+	private List<Pedido> pedidos;
+	
+	@ManyToOne
+	@JoinColumn(name = "categoriaId")
+	private Categoria categoria;
 	
 	public Long getId() {
 		return id;
@@ -94,12 +100,20 @@ public class Produto {
 		this.imagem = imagem;
 	}
 	
-	public Long getCategoriaId() {
-		return categoriaId;
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedido(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
 	}
 	
-	public void setCategoriaId(Long categoriaId) {
-		this.categoriaId = categoriaId;
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 	
 }

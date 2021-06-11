@@ -1,6 +1,7 @@
 package br.com.serratecEcommerce.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -17,10 +19,10 @@ import javax.persistence.Table;
 public class Cliente {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.TABLE)
 	private Long id;
 	
-	@Column( nullable = false)
+	@Column( nullable = false, unique = true)
 	private String email;
 	
 	@Column( nullable = false)
@@ -29,7 +31,7 @@ public class Cliente {
 	@Column( nullable = false)
 	private String nome;
 	
-	@Column( length = 11, nullable = false)
+	@Column( length = 11, nullable = false, unique = true)
 	private String cpfOuCnpj;
 	
 	private String telefone;
@@ -37,8 +39,11 @@ public class Cliente {
 	private Date dataDeNascimento;
 	
 	@OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "endereco_id")
+    @JoinColumn(name = "enderecoId")
 	private Endereco endereco;
+	
+	@OneToMany(mappedBy = "cliente",cascade=CascadeType.ALL)
+	private List<Pedido> listPedidos;
 	
 	public Long getId() {
 		return id;

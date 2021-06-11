@@ -7,6 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,7 +21,18 @@ public class Curso {
 	Long id;
 	@Column(nullable = false)
 	String descricao;
+	
+	@ManyToMany
+    @JoinTable(
+        name = "cursos_modulos",
+        joinColumns = @JoinColumn(name = "curso_id"),
+        inverseJoinColumns = @JoinColumn(name = "modulo_id")
+    )
 	ArrayList<Modulo> listaDeModulos;
+	
+
+    @ManyToOne
+    @JoinColumn(name = "aluno_id")
 	ArrayList<Aluno> listaDeAlunos;
 	
 	

@@ -1,45 +1,50 @@
 package br.com.serratecEcommerce.model;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "pedidos")
-public class Pedidos {
+public class Pedido {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.TABLE)
 	private Long id;
 	
-	@Column( nullable = false)
 	private Integer numeroDoPedido;
 		
-	@Column( nullable = false)
 	private Double valorTotalDoPedido;
 	
-	@Column( nullable = false)
 	private Date dataDoPedido;
 	
-	@Column( nullable = false)
 	private String status;
 	
-	@Column( nullable = false)
-	private Long clienteId;
+	@ManyToOne
+	@JoinColumn(name = "clienteId")
+	private Cliente cliente;
 	
-	private ArrayList<Produto> produtos = new ArrayList<Produto>();
+	@ManyToMany
+	@JoinTable(
+		name = "produtos_pedidos", 
+		joinColumns = @JoinColumn(name="pedidoId"), 
+		inverseJoinColumns = @JoinColumn(name = "produtoId"))
+	private List<Produto> produtos;
 	
-	public ArrayList<Produto> getProdutos() {
+	public List<Produto> getProdutos() {
 		return produtos;
 	}
 
-	public void setProdutos(ArrayList<Produto> produtos) {
+	public void setProdutos(List<Produto> produtos) {
 		this.produtos = produtos;
 	}
 
@@ -83,12 +88,12 @@ public class Pedidos {
 		this.status = status;
 	}
 	
-	public Long getClienteId() {
-		return clienteId;
+	public Cliente getCliente() {
+		return cliente;
 	}
 	
-	public void setClienteId(Long clienteId) {
-		this.clienteId = clienteId;
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 	
 }

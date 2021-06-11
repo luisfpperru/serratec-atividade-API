@@ -8,6 +8,7 @@ import br.com.serratecEcommerce.model.email.MensagemEmail;
 
 @Service
 public class EmailService {
+	
 		@Autowired
 		Mailler mailler;
 		
@@ -18,7 +19,6 @@ public class EmailService {
 				return "Email enviado com sucesso!";
 				
 			} catch (Exception e) {
-				e.printStackTrace();
 				return "Algo deu errado no envio...";
 			}
 		}
@@ -30,7 +30,6 @@ public class EmailService {
 				return "Email enviado com sucesso!";
 				
 			} catch (Exception e) {
-				e.printStackTrace();
 				return "Algo deu errado no envio...";
 			}
 		}
