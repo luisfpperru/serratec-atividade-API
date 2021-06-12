@@ -38,7 +38,7 @@ public class ClienteController {
 
 	@ApiOperation(value = "Retorna o cliente pelo ID")
 	@GetMapping("/id/{id}")
-	public Optional<Cliente> obterPorId(@PathVariable(value = "id") Long id){
+	public Cliente obterPorId(@PathVariable(value = "id") Long id){
 		return _servicoCliente.obterPorId(id);
 	}
 	
