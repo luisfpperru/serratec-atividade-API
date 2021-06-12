@@ -10,9 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.com.serratecEcommerce.model.Categoria;
 import br.com.serratecEcommerce.model.Produto;
 import br.com.serratecEcommerce.model.exception.ResourceBadRequestException;
 import br.com.serratecEcommerce.model.exception.ResourceNotFoundException;
+import br.com.serratecEcommerce.repository.CategoriaRepository;
 import br.com.serratecEcommerce.repository.ProdutoRepository;
 
 
@@ -21,6 +23,9 @@ public class ProdutoService {
 
 	@Autowired
 	private ProdutoRepository _repositorioProduto;
+	
+	@Autowired
+	private CategoriaRepository _repositorioCategoria;
 	
 	@Autowired
 	private UploadService servicoUpload;
@@ -33,6 +38,10 @@ public class ProdutoService {
 		return this._repositorioProduto.findById(id);
 	}
 	
+	public List<Produto> obterPorNome(String nome){
+		return this._repositorioProduto.findByNomeContaining(nome);
+	}
+	
 	public ResponseEntity<Produto> adicionar(Produto produto){
 		this.validarProduto(produto);
 		produto.setId(null);
@@ -41,8 +50,19 @@ public class ProdutoService {
         return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
 	}
 	
+	public ResponseEntity<Produto> adicionarCategoriaProduto(Produto produto,Long categoriaId) {
+		produto.setId(null);
+		Optional<Categoria> categoria = _repositorioCategoria.findById(categoriaId);
+		if (categoria.isEmpty())
+			throw new ResourceNotFoundException("Categoria não encontrada pelo ID:" + categoriaId);
+		produto.setCategoria(categoria.get());
+		produto.setDataDeCadastroDoProduto(new Date());
+		var adicionado = _repositorioProduto.save(produto);
+        return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
+	}
+	
 	public ResponseEntity<Produto> adicionarImagemAoProduto(Long id, MultipartFile imagem){
-		var produto = _repositorioProduto.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrada pelo ID:" + id));
+		var produto = _repositorioProduto.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrado pelo ID:" + id));
 		var enderecoImagem = servicoUpload.salvar("/img", imagem);
 		produto.setImagem(enderecoImagem);
 		var atualizado = _repositorioProduto.save(produto);
@@ -50,12 +70,22 @@ public class ProdutoService {
 	}
 	
 	 public Produto atualizar(Long id,Produto produto) {
- 		 _repositorioProduto.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrada pelo ID:" + id));
+ 		 _repositorioProduto.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrado pelo ID:" + id));
  		 this.validarProduto(produto);
  		 produto.setId(id);
          return this._repositorioProduto.save(produto);
 	 }
-
+	 
+		public Produto atualizarCategoriaProduto(Long id,Produto produto,Long categoriaId) {
+			produto.setId(id);
+	 		 _repositorioProduto.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrado pelo ID:" + id));
+			Optional<Categoria> categoria = _repositorioCategoria.findById(categoriaId);
+			if (categoria.isEmpty())
+				throw new ResourceNotFoundException("Categoria não encontrada pelo ID:" + categoriaId);
+			produto.setCategoria(categoria.get());
+			return _repositorioProduto.save(produto);
+		}
+		
 	 public void deletar(Long id) {
 		 _repositorioProduto.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrada pelo ID:" + id));
          this._repositorioProduto.deleteById(id);

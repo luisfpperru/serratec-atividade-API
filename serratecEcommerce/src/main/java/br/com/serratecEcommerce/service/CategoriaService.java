@@ -27,7 +27,7 @@ public class CategoriaService {
 	}
 	
 	public List<Categoria> obterPorNome(String nome){
-		return this._repositorioCategoria.findByNome(nome);
+		return this._repositorioCategoria.findByNomeContaining(nome);
 	}
 	
 	public ResponseEntity<Categoria> adicionar(Categoria categoria) {

@@ -60,6 +60,5 @@ public class ClienteService {
 		    List<ValidationMessage> erros = cpfValidator.invalidMessagesFor(cpf); 
 		    if (!erros.isEmpty())
 		    	throw new ResourceBadRequestException("CPF é inválido!");
-	 }
-	 
+	 }	 
 }
