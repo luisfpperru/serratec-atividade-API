@@ -98,4 +98,27 @@ public class Endereco {
 		this.estado = estado;
 	}
 	
+	public String getUf() {
+		return estado;
+	}
+	
+	public void setUf(String uf) {
+		this.estado = uf;
+	}	
+	
+	public String getLocalidade() {
+		return cidade;
+	}
+	
+	public void setLocalidade(String localidade) {
+		this.cidade = localidade;
+	}
+	
+	public String getLogradouro() {
+		return rua;
+	}
+	
+	public void setLogradouro(String logradouro) {
+		this.rua = logradouro;
+	}
 }

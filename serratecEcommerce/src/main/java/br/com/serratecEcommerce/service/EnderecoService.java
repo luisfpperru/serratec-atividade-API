@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.com.serratecEcommerce.model.Endereco;
-import br.com.serratecEcommerce.model.EnderecoCep;
 import br.com.serratecEcommerce.model.exception.ResourceBadRequestException;
 import br.com.serratecEcommerce.model.exception.ResourceNotFoundException;
 import br.com.serratecEcommerce.repository.EnderecoRepository;
@@ -54,30 +53,30 @@ public class EnderecoService {
 	 }
 	
 	 private void validarEndereco(Endereco endereco) {
-			EnderecoCep enderecoCorreto = servicoCep.obterEnderecoPorCep(endereco.getCep());
-			if (!endereco.getRua().equals(enderecoCorreto.getLogradouro()) ) 
+			Endereco enderecoCorreto = servicoCep.obterEnderecoPorCep(endereco.getCep());
+			if (!endereco.getRua().equals(enderecoCorreto.getRua()) ) 
 				throw new ResourceBadRequestException("A rua não conferi com seu CEP!");
 			if (!endereco.getBairro().equals(enderecoCorreto.getBairro()) )
 				throw new ResourceBadRequestException("O bairro não confere com seu CEP!");
-			if (!endereco.getCidade().equals(enderecoCorreto.getLocalidade()) )
+			if (!endereco.getCidade().equals(enderecoCorreto.getCidade()) )
 				throw new ResourceBadRequestException("A cidade não confere com seu CEP!");
 			if (!endereco.getComplemento().equals(enderecoCorreto.getComplemento()) )
 				throw new ResourceBadRequestException("O complemento não confere com seu CEP!");
-			if (!endereco.getEstado().equals(enderecoCorreto.getUf()) )
+			if (!endereco.getEstado().equals(enderecoCorreto.getEstado()) )
 				throw new ResourceBadRequestException("O estado não confere com seu CEP!");	
 		}
 	 
 	 	private void autocompletarEndereco(Endereco endereco) {
-			EnderecoCep enderecoCorreto = servicoCep.obterEnderecoPorCep(endereco.getCep());
+			Endereco enderecoCorreto = servicoCep.obterEnderecoPorCep(endereco.getCep());
 			if (endereco.getRua() == null ) 
-				endereco.setRua(enderecoCorreto.getLogradouro());
+				endereco.setRua(enderecoCorreto.getRua());
 			if (endereco.getBairro() == null)
 				endereco.setBairro(enderecoCorreto.getBairro());
 			if (endereco.getCidade() == null )
-				endereco.setCidade(enderecoCorreto.getLocalidade());
+				endereco.setCidade(enderecoCorreto.getCidade());
 			if (endereco.getComplemento() == null)
 				endereco.setComplemento(enderecoCorreto.getComplemento());
 			if (endereco.getEstado() == null )
-				endereco.setEstado(enderecoCorreto.getUf());
+				endereco.setEstado(enderecoCorreto.getEstado());
 		}
 }
