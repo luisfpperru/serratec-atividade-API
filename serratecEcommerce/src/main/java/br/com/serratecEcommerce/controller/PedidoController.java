@@ -50,14 +50,6 @@ public class PedidoController {
         return _servicoPedido.adicionar(pedido);
 	}
 	
-	@ApiOperation(value = "Adiciona um pedido de um cliente já existente")
-	@PostMapping("/cliente/{clienteId}")
-	public ResponseEntity<Produto> adicionarPedidoDoCliente(@RequestBody Pedido pedido,
-											 @PathVariable(value = "clienteId") Long clienteId) {
-		return adicionarPedidoDoCliente(pedido,clienteId);
-		
-	}
-	
 	@ApiOperation(value = "Atualiza um pedido existente")
 	@PutMapping("/id/{id}")
 	 public Pedido atualizar(@PathVariable(value = "id") Long id, @RequestBody PedidoRequest pedidos) {

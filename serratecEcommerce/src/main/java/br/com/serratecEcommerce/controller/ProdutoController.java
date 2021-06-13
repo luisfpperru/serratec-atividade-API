@@ -55,14 +55,6 @@ public class ProdutoController {
         return _servicoProduto.adicionar(produto);
 	}
 	
-	@ApiOperation(value = "Adiciona um produto com uma categoria já existente")
-	@PostMapping("/categoria/{categoriaId}")
-	public ResponseEntity<Produto> adicionarCategoriaProduto(@RequestBody Produto produto,
-											 @PathVariable(value = "categoriaId") Long categoriaId) {
-		return adicionarCategoriaProduto(produto,categoriaId);
-		
-	}
-	
 	@ApiOperation(value = "Adiciona uma imagem ao produto")
 	@PostMapping("/imagem/{id}")
 	public ResponseEntity<Produto> adicionarImagemAoProduto(@PathVariable(value = "id") Long id,
@@ -75,14 +67,6 @@ public class ProdutoController {
 	 public Produto atualizar(@PathVariable(value = "id") Long id, @RequestBody Produto produto) {
          return _servicoProduto.atualizar(id, produto);
 	 }
-	
-	@ApiOperation(value = "Atualiza um produto juntamente com a categoria de um produto existente")
-	@PutMapping("id/{id}/categoria/{categoriaId}")
-	public Produto atualizarCategoriaProduto(@PathVariable(value = "id") Long id,
-											 @RequestBody Produto produto,
-											 @PathVariable(value = "categoriaId") Long categoriaId) {
-		return atualizarCategoriaProduto(id,produto,categoriaId);
-	}
 
 	 @ApiOperation(value = "Deleta um produto existente")
 	 @DeleteMapping("/id/{id}")

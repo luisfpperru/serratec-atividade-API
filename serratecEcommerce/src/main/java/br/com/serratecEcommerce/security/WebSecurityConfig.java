@@ -61,10 +61,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			 * 
 			 */
 			
-			.antMatchers("/api/login","/api/swagger-ui.html") // Esse cara aqui pode receber vários
+			.antMatchers("/api/login") // Esse cara aqui pode receber vários
+			.permitAll() // Informa que todos podem acessar
+			
+			.antMatchers("/swagger-ui.html","/swagger-ui.html/**") // Esse cara aqui pode receber vários
 			.permitAll() // Informa que todos podem acessar
 			
 			.antMatchers(HttpMethod.POST,"/api/clientes")
+			.permitAll()
+			
+			.antMatchers(HttpMethod.GET,"/api/pedidos")
+			.permitAll()
+			
+			.antMatchers(HttpMethod.DELETE,"/api/pedidos")
 			.permitAll()
 			
 			.antMatchers("/api/categorias","/api/categorias/**")

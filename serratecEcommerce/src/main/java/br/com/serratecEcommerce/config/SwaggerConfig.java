@@ -23,15 +23,15 @@ public class SwaggerConfig {
 		return new Docket(DocumentationType.SWAGGER_2) // Tipo de documentação, no caso swagger2
 				.select() // Utilizado para pega ro projeto inteiro.
 				.apis(RequestHandlerSelectors.any()) // Filtra as apis que desejar, nesse caso pega todos os controllers
-				.paths(regex("/api.*")) // Filtra somente os controllers que iniciam com /api
+				.paths(regex("/api.*")) // Filtra somente os controllers que iniciam com /api  
 				.build() // Constroi o objeto
 				.apiInfo(info()); // Adiciona informações complementares a documentação.
 	}
 	
 	private ApiInfo info() {
 		return new ApiInfo(
-				"Serratec E-Commerce", //Titulo da API
-				"API REST do Serratec E-Commerce do grupo Luis and the Rats", // Descrição da API
+				"Lab Rat Eletrônicos", //Titulo da API
+				"API REST do Lab Rat Eletrônicos do grupo Luis and the Rats", // Descrição da API
 				"1.0", // Versão
 				"Termos de Serviços", // Termos da licença, pode ser a URL
 				new Contact("...", //Nome da pessoa de contato

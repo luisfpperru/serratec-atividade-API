@@ -65,19 +65,6 @@ public class PedidoService {
         return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
 	}
 	
-	public ResponseEntity<Pedido> adicionarPedidoDoCliente(Pedido pedido,Long clienteId) {
-		pedido.setId(null);
-		Optional<Cliente> cliente = _repositorioCliente.findById(clienteId);
-		if (cliente.isEmpty())
-			throw new ResourceNotFoundException("Cliente não encontrada pelo ID:" + clienteId);
-		pedido.setCliente(cliente.get());
-		pedido.setDataDoPedido(new Date());
-		calcularValorTotal(pedido);
-		var adicionado = _repositorioPedido.save(pedido);
-		checarPedidoFinalizado(pedido);
-        return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
-	}
-	
 	 public Pedido atualizar(Long id, PedidoRequest pedidoRequest) {
  		Pedido pedido = _repositorioPedido.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Pedido não encontrado(a) pelo ID:" + id));	
  		if (!pedidoRequest.getProdutosId().isEmpty()) {

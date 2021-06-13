@@ -53,17 +53,6 @@ public class ProdutoService {
         return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
 	}
 	
-	public ResponseEntity<Produto> adicionarCategoriaProduto(Produto produto,Long categoriaId) {
-		produto.setId(null);
-		Optional<Categoria> categoria = _repositorioCategoria.findById(categoriaId);
-		if (categoria.isEmpty())
-			throw new ResourceNotFoundException("Categoria não encontrada pelo ID:" + categoriaId);
-		produto.setCategoria(categoria.get());
-		produto.setDataDeCadastroDoProduto(new Date());
-		var adicionado = _repositorioProduto.save(produto);
-        return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
-	}
-	
 	public ResponseEntity<Produto> adicionarImagemAoProduto(Long id, MultipartFile imagem){
 		var produto = _repositorioProduto.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrado pelo ID:" + id));
 		var enderecoImagem = servicoUpload.salvar("/img", imagem);
@@ -78,16 +67,6 @@ public class ProdutoService {
  		 produto.setId(id);
          return this._repositorioProduto.save(produto);
 	 }
-	 
-		public Produto atualizarCategoriaProduto(Long id,Produto produto,Long categoriaId) {
-			produto.setId(id);
-	 		 _repositorioProduto.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrado pelo ID:" + id));
-			Optional<Categoria> categoria = _repositorioCategoria.findById(categoriaId);
-			if (categoria.isEmpty())
-				throw new ResourceNotFoundException("Categoria não encontrada pelo ID:" + categoriaId);
-			produto.setCategoria(categoria.get());
-			return _repositorioProduto.save(produto);
-		}
 		
 	 public void deletar(Long id) {
 		 _repositorioProduto.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrada pelo ID:" + id));
