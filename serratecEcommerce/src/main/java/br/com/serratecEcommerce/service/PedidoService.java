@@ -12,18 +12,23 @@ import org.springframework.stereotype.Service;
 
 import br.com.serratecEcommerce.model.Cliente;
 import br.com.serratecEcommerce.model.Pedido;
+import br.com.serratecEcommerce.model.PedidoRequest;
 import br.com.serratecEcommerce.model.Produto;
 import br.com.serratecEcommerce.model.email.MensagemEmail;
 import br.com.serratecEcommerce.model.exception.ResourceBadRequestException;
 import br.com.serratecEcommerce.model.exception.ResourceNotFoundException;
 import br.com.serratecEcommerce.repository.ClienteRepository;
 import br.com.serratecEcommerce.repository.PedidoRepository;
+import br.com.serratecEcommerce.repository.ProdutoRepository;
 
 @Service
 public class PedidoService {
 	
 	@Autowired
 	private PedidoRepository _repositorioPedido;
+	
+	@Autowired
+	private ProdutoRepository _repositorioProduto;
 	
 	@Autowired
 	private ClienteRepository _repositorioCliente;
@@ -39,8 +44,21 @@ public class PedidoService {
 		return this._repositorioPedido.findById(id);
 	}
 	
-	public ResponseEntity<Pedido> adicionar(Pedido pedido){
-		pedido.setId(null);
+	public ResponseEntity<Pedido> adicionar(PedidoRequest pedidoRequest){
+		var pedido = new Pedido();
+		if (!pedidoRequest.getProdutosId().isEmpty()) {
+		pedidoRequest.getProdutosId().forEach(produtoId -> 
+			{Optional<Produto> produto = _repositorioProduto.findById(produtoId);
+			if (produto.isPresent())
+				pedido.getProdutos().add(produto.get());	
+		});
+		}
+		Long clienteId = pedidoRequest.getClienteId();
+		if (clienteId != null) {
+			var cliente = _repositorioCliente.findById(clienteId).orElseThrow( ()-> new ResourceNotFoundException("Cliente não encontrado(a) pelo ID:" + clienteId));
+ 			pedido.setCliente(cliente);
+		}
+		pedido.setStatus(pedidoRequest.getStatus());
 		calcularValorTotal(pedido);
 		pedido.setDataDoPedido(new Date());
 		var adicionado = this._repositorioPedido.save(pedido);
@@ -60,11 +78,24 @@ public class PedidoService {
         return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
 	}
 	
-	 public Pedido atualizar(Long id, Pedido pedido) {
- 		var pedidoAtual = _repositorioPedido.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Pedido não encontrado(a) pelo ID:" + id));
- 		validarPedido(pedidoAtual);
+	 public Pedido atualizar(Long id, PedidoRequest pedidoRequest) {
+ 		Pedido pedido = _repositorioPedido.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Pedido não encontrado(a) pelo ID:" + id));	
+ 		if (!pedidoRequest.getProdutosId().isEmpty()) {
+ 		pedidoRequest.getProdutosId().forEach(produtoId -> 
+ 			{Optional<Produto> produto = _repositorioProduto.findById(produtoId);
+			if (produto.isPresent())
+				pedido.getProdutos().add(produto.get());	
+		});
+ 		}
+		Long clienteId = pedidoRequest.getClienteId();
+		if (clienteId != null) {
+				Cliente cliente = _repositorioCliente.findById(pedidoRequest.getClienteId()).orElseThrow( ()-> new ResourceNotFoundException("Cliente não encontrado(a) pelo ID:" + id));
+				pedido.setCliente(cliente);
+		}
+ 		validarPedido(pedido);
+		pedido.setStatus(pedidoRequest.getStatus());
 		calcularValorTotal(pedido);
- 		pedido.setId(id);
+ 		pedido.setId(id); 		
  		var atualizado = this._repositorioPedido.save(pedido);
  		checarPedidoFinalizado(pedido);
  		return atualizado;
@@ -77,8 +108,10 @@ public class PedidoService {
 	 
 	 private void calcularValorTotal(Pedido pedido) {
 		 var valorTotal = 0.0;
-		 for (Produto produto:pedido.getProdutos())
+		 if (!pedido.getProdutos().isEmpty()) {
+			 for (Produto produto:pedido.getProdutos())
 			 	valorTotal += produto.getPreco();					
+		 }
 		 pedido.setValorTotalDoPedido(valorTotal);
 	 }
 	private void validarPedido(Pedido pedido) {
@@ -89,13 +122,32 @@ public class PedidoService {
 	private void checarPedidoFinalizado(Pedido pedido) {
 		if (pedido.getStatus().equals("finalizado") || pedido.getStatus().equals("Finalizado")) {
 			var destinatarios = new ArrayList<String>();
-			destinatarios.add("serratecdev@gmail.com");
+			destinatarios.add("labratinformatica@gmail.com");
 			destinatarios.add(pedido.getCliente().getEmail());
+			String html = "<html>"
+					+ "<head>"
+					+ "<title>Lab Rat Eletronicos</title>"
+					+ "</head>"
+					+ "<body style=\"text-align: center; font-family: Verdana, Geneva, Tahoma, sans-serif\" > "
+					+ "<header style=\"background-color: #062035; color: white\"> "
+					+ "<img src=\'https://i.ibb.co/ccyhrhC/logo.png\' alt=\"\" /><div>"
+					+ "<h1>Prezado(a) "+pedido.getCliente().getNome()+"</h1>"
+							+ "<h2>Sua compra foi efetuada com sucesso!</h2>"
+							+ " <br></div>"
+							+ "<div style=\"color:#062035; background-color: white;\">"
+							+ "Detalhes da compra</div>"+exibirProdutosNoPedido(pedido)+""
+									+ "<div style=\"color:white; background-color: #062035;\">"
+									+ "TOTAL DA COMPRA: "+pedido.getValorTotalDoPedido()+"</div>"
+											+ "<div style=\"color:white; background-color: #062035;\">"
+											+ "Date de entrega prevista: "+calculaDataDeEntrega()+"</div>"
+											+ "</body>"
+											+ "</html>";
+
 			var email  = new MensagemEmail("Sua compra foi finalizada com sucesso!",
-										   "Data de entrega: "+ calculaDataDeEntrega()+", Seu carrinho:"+exibirProdutosNoPedido(pedido)+", Valor Total da sua compra: " + pedido.getValorTotalDoPedido(),	   
-										   "Serratec Ecommerce <serratecdev@gmail.com>",
+											html,	   
+										   "Lab Rat Eletronicos <labratinformatica@gmail.com>",
 										   destinatarios);
-			_serviceEmail.enviarEmail(email);
+			_serviceEmail.enviarHtml(email);
 		}
 	}
 	 private Date calculaDataDeEntrega() {
@@ -103,8 +155,10 @@ public class PedidoService {
 	 }
 	 private String exibirProdutosNoPedido(Pedido pedido) {
 		String lista = "";
-        for( Produto produto: pedido.getProdutos())
-        	lista += String.format("/n  %s  %s  %s  /n",produto.getNome(),produto.getPreco(),produto.getQuantidadeEmEstoque(),produto.getDescricao());
-        return lista;
-	 } 
+		if (!pedido.getProdutos().isEmpty()) {
+			for( Produto produto: pedido.getProdutos())
+        		lista += String.format("<br>  %s  %s  %s  %s",produto.getNome(),produto.getPreco(),produto.getQuantidadeEmEstoque(),produto.getDescricao());
+		} 
+		return lista;
+	 }
 }

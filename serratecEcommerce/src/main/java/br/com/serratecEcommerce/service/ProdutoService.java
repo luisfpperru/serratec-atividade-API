@@ -34,19 +34,22 @@ public class ProdutoService {
 		return this._repositorioProduto.findAll();
 		}
 	
-	public Optional<Produto> obterPorId(Long id){
-		return this._repositorioProduto.findById(id);
+	public Produto obterPorId(Long id){
+		return _repositorioProduto.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Produto não encontrada pelo ID:" + id));
 	}
 	
 	public List<Produto> obterPorNome(String nome){
-		return this._repositorioProduto.findByNomeContaining(nome);
+		List<Produto> produtos = _repositorioProduto.findByNomeContaining(nome);
+		if (produtos.isEmpty())
+			throw new ResourceNotFoundException("Produto não encontrada pelo nome:" + nome);
+		return produtos;
 	}
 	
 	public ResponseEntity<Produto> adicionar(Produto produto){
 		this.validarProduto(produto);
 		produto.setId(null);
 		produto.setDataDeCadastroDoProduto(new Date());
-		var adicionado = this._repositorioProduto.save(produto);
+		var adicionado = _repositorioProduto.save(produto);
         return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
 	}
 	

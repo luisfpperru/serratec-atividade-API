@@ -1,5 +1,6 @@
 package br.com.serratecEcommerce.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,16 +12,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "pedidos")
+@SequenceGenerator(name = "generator_pedido", sequenceName = "sequence_pedido", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "generator_nro_pedido", sequenceName = "sequence_pedido", initialValue = 1, allocationSize = 1)
 public class Pedido {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gerator_pedido")
 	private Long id;
 	
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gerator_nro_pedido")
 	private Integer numeroDoPedido;
 		
 	private Double valorTotalDoPedido;
@@ -38,7 +43,7 @@ public class Pedido {
 		name = "produtos_pedidos", 
 		joinColumns = @JoinColumn(name="pedidoId"), 
 		inverseJoinColumns = @JoinColumn(name = "produtoId"))
-	private List<Produto> produtos;
+	private List<Produto> produtos = new ArrayList<Produto>();
 	
 	public List<Produto> getProdutos() {
 		return produtos;

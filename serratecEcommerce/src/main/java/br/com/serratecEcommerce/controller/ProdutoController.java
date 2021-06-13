@@ -39,7 +39,7 @@ public class ProdutoController {
 
 	@ApiOperation(value = "Retorna um produto pelo ID")
 	@GetMapping("/id/{id}")
-	public Optional<Produto> obterPorId(@PathVariable(value = "id") Long id){
+	public Produto obterPorId(@PathVariable(value = "id") Long id){
 		return _servicoProduto.obterPorId(id);
 	}
 	

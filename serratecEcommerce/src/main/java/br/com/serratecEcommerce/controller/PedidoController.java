@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.serratecEcommerce.model.Pedido;
+import br.com.serratecEcommerce.model.PedidoRequest;
 import br.com.serratecEcommerce.model.Produto;
 import br.com.serratecEcommerce.service.PedidoService;
 import io.swagger.annotations.Api;
@@ -45,8 +46,8 @@ public class PedidoController {
 	
 	@ApiOperation(value = "Adiciona um pedido")
 	@PostMapping
-	public ResponseEntity<Pedido>  adicionar(@RequestBody Pedido pedidos){
-        return _servicoPedido.adicionar(pedidos);
+	public ResponseEntity<Pedido>  adicionar(@RequestBody PedidoRequest pedido){
+        return _servicoPedido.adicionar(pedido);
 	}
 	
 	@ApiOperation(value = "Adiciona um pedido de um cliente já existente")
@@ -59,7 +60,7 @@ public class PedidoController {
 	
 	@ApiOperation(value = "Atualiza um pedido existente")
 	@PutMapping("/id/{id}")
-	 public Pedido atualizar(@PathVariable(value = "id") Long id, @RequestBody Pedido pedidos) {
+	 public Pedido atualizar(@PathVariable(value = "id") Long id, @RequestBody PedidoRequest pedidos) {
          return _servicoPedido.atualizar(id,pedidos);
 	 }
 	

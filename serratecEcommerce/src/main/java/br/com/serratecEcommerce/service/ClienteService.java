@@ -1,25 +1,34 @@
 package br.com.serratecEcommerce.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.caelum.stella.ValidationMessage;
 import br.com.caelum.stella.validation.CPFValidator;
+import br.com.serratecEcommerce.dto.LoginResponse;
 import br.com.serratecEcommerce.model.Cliente;
 import br.com.serratecEcommerce.model.Endereco;
+import br.com.serratecEcommerce.model.email.MensagemEmail;
 import br.com.serratecEcommerce.model.exception.ResourceBadRequestException;
 import br.com.serratecEcommerce.model.exception.ResourceNotFoundException;
 import br.com.serratecEcommerce.repository.ClienteRepository;
 import br.com.serratecEcommerce.repository.EnderecoRepository;
+import br.com.serratecEcommerce.security.JWTService;
 
 @Service
 public class ClienteService {
-
+	
 	@Autowired
 	private ClienteRepository _repositorioCliente;
 	
@@ -29,6 +38,19 @@ public class ClienteService {
 	@Autowired
 	private CepService servicoCep;
 	
+	@Autowired 
+	private EmailService _serviceEmail;
+	
+	private static final String headerPrefix = "Bearer ";
+	
+	@Autowired
+	private JWTService jwtService;
+	
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;	
 	
 	public List<Cliente> obterTodos(){
 		return this._repositorioCliente.findAll();
@@ -47,25 +69,38 @@ public class ClienteService {
 		return clientes;
 	}
 	
-	public ResponseEntity<Cliente> adicionar(Cliente cliente) {
+	public ResponseEntity<Cliente> cadastrar(Cliente cliente) {
 		validaCpf(cliente.getCpfOuCnpj());
 		autocompletarEndereco(cliente.getEndereco());
  		validarEndereco(cliente.getEndereco());
 		cliente.setId(null);
-		var adicionado = this._repositorioCliente.save(cliente);
-		return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
+		
+		if (_repositorioCliente.findByEmail(cliente.getEmail()).isPresent()) {
+			throw new ResourceBadRequestException("Já existe um cliente com esse email!");
+			//Aqui lança uma exception informando que ja existe um usuario com este e-mail.
+		}
+		String senha = passwordEncoder.encode(cliente.getSenha());
+		cliente.setSenha(senha);
+		_repositorioCliente.save(cliente);
+		enviarEmailCadastro(cliente);
+		return new ResponseEntity<>(cliente, HttpStatus.CREATED);
 	}
 	
 	 public Cliente atualizar(Long id,Cliente cliente) {
  		 Cliente clienteAtual = _repositorioCliente.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Cliente não encontrado(a) pelo ID:" + id));
- 		 validaCpf(cliente.getCpfOuCnpj());
  		 autocompletarEndereco(cliente.getEndereco());
  		 validarEndereco(cliente.getEndereco());
  		 cliente.setId(id);
  		 cliente.setCpfOuCnpj(clienteAtual.getCpfOuCnpj());
+ 		 if (_repositorioCliente.findByEmail(cliente.getEmail()).isPresent()) {
+			throw new ResourceBadRequestException("Já existe um cliente com esse email!");
+			//Aqui lança uma exception informando que ja existe um usuario com este e-mail.
+ 		 }
+ 		 String senha = passwordEncoder.encode(cliente.getSenha());
+ 		 cliente.setSenha(senha);
  		 if (!clienteAtual.getEndereco().getId().equals(null))
-			this._repositorioEndereco.deleteById(clienteAtual.getEndereco().getId());
-         return this._repositorioCliente.save(cliente);
+			_repositorioEndereco.deleteById(clienteAtual.getEndereco().getId());
+         return _repositorioCliente.save(cliente);
 	 }
 
 	 public void deletar(Long id) {
@@ -109,5 +144,44 @@ public class ClienteService {
 				endereco.setComplemento(enderecoCorreto.getComplemento());
 			if (endereco.getEstado() == null )
 				endereco.setEstado(enderecoCorreto.getEstado());
+		}
+	 	
+	 	private void enviarEmailCadastro(Cliente cliente){
+	 		var destinatarios = new ArrayList<String>();
+			destinatarios.add("labratinformatica@gmail.com");
+			destinatarios.add(cliente.getEmail());
+			String html = "<html>"
+					+ "<head>"
+					+ "<title>Lab Rat Eletronicos</title>"
+					+ "</head>"
+					+ "<body style=\"text-align: center; font-family: Verdana, Geneva, Tahoma, sans-serif\" > "
+					+ "<header style=\"background-color: #062035; color: white\"> "
+					+ "<img src=\'https://i.ibb.co/ccyhrhC/logo.png\' alt=\"\" /><div>"
+					+ "<h1>Prezado(a) "+ cliente.getNome()+"</h1>"
+							+ "<h2> Seu cadastro foi efetuado com sucesso!</h2><br></div>"
+							+ "<div style=\"color:#062035; background-color: white;\">"
+									+ "<div style=\"color:white; background-color: #062035;\"></div>"
+											+ "</body>"
+											+ "</html>";
+
+			var email  = new MensagemEmail("Seu cadastro foi concluido com sucesso!",
+											html,	   
+										   "Lab Rat Eletronicos <labratinformatica@gmail.com>",
+										   destinatarios);
+			_serviceEmail.enviarHtml(email);
+		}
+	 	
+	 	public LoginResponse logar(String email, String senha) {
+			
+			Authentication autenticacao = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(email, senha, Collections.emptyList()));
+			
+			SecurityContextHolder.getContext().setAuthentication(autenticacao);
+			
+			String token = headerPrefix + jwtService.gerarToken(autenticacao);
+			
+			var cliente = _repositorioCliente.findByEmail(email);
+			
+			return new LoginResponse(token, cliente.get());
 		}
 }

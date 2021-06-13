@@ -1,5 +1,6 @@
 package br.com.serratecEcommerce.model;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -12,14 +13,23 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "cliente")
-public class Cliente {
-	
+@SequenceGenerator(name = "generator_cliente", sequenceName = "sequence_cliente", initialValue = 1, allocationSize = 1)
+public class Cliente implements UserDetails{
+
+	private static final long serialVersionUID = 2683544335737374949L;
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gerator_cliente")
 	private Long id;
 	
 	@Column( nullable = false, unique = true)
@@ -107,6 +117,50 @@ public class Cliente {
 	
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
-	}	
-	
+	}
+
+	@Override
+	@JsonIgnore
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@JsonIgnore
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return senha;
+	}
+
+	@Override
+	@JsonIgnore
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return email;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isEnabled() {
+		return true;
+	}
 }

@@ -5,14 +5,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "endereco")
+@SequenceGenerator(name = "generator_endereco", sequenceName = "sequence_endereco", initialValue = 1, allocationSize = 1)
 public class Endereco {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gerator_endereco")
 	private Long id;
 	
 	@Column( nullable = false)

@@ -38,7 +38,7 @@ public class CategoriaController {
 
 	@ApiOperation(value = "Retorna a categoria por ID")
 	@GetMapping("/id/{id}")
-	public Optional<Categoria> obterPorId(@PathVariable(value = "id") Long id){
+	public Categoria obterPorId(@PathVariable(value = "id") Long id){
 		return _servicoCategoria.obterPorId(id);
 	}
 	

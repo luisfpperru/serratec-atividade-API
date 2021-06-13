@@ -1,7 +1,6 @@
 package br.com.serratecEcommerce.model;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,16 +8,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "produto")
+@SequenceGenerator(name = "generator_produto", sequenceName = "sequence_produto", initialValue = 1, allocationSize = 1)
 public class Produto {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gerator_produto")
 	private Long id;
 	
 	@Column( nullable = false)
@@ -37,8 +37,8 @@ public class Produto {
 	
 	private String imagem;
 	
-	@ManyToMany(mappedBy = "produtos")
-	private List<Pedido> pedidos;
+	//@ManyToMany(mappedBy = "produtos")
+	//private List<Pedido> pedidos;
 	
 	@ManyToOne
 	@JoinColumn(name = "categoriaId")
@@ -98,14 +98,6 @@ public class Produto {
 	
 	public void setImagem(String imagem) {
 		this.imagem = imagem;
-	}
-	
-	public List<Pedido> getPedidos() {
-		return pedidos;
-	}
-
-	public void setPedido(List<Pedido> pedidos) {
-		this.pedidos = pedidos;
 	}
 
 	public Categoria getCategoria() {

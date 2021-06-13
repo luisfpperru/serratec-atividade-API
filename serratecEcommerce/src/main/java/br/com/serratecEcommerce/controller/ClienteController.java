@@ -1,7 +1,6 @@
 package br.com.serratecEcommerce.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -48,10 +47,10 @@ public class ClienteController {
 		return _servicoCliente.obterPorNome(nome);
 	}
 	
-	@ApiOperation(value = "Adiciona um cliente")
+	@ApiOperation(value = "Cadastra um novo cliente")
 	@PostMapping
-	public ResponseEntity<Cliente> adicionar(@RequestBody Cliente cliente){
-        return _servicoCliente.adicionar(cliente);
+	public ResponseEntity<Cliente> cadastrar(@RequestBody Cliente cliente){
+        return _servicoCliente.cadastrar(cliente);
 	}
 	
 	@ApiOperation(value = "Atualiza os dados de cliente existente")

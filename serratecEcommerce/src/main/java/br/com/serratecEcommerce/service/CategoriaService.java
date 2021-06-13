@@ -22,17 +22,20 @@ public class CategoriaService {
 		return this._repositorioCategoria.findAll();
 		}
 	
-	public Optional<Categoria> obterPorId(Long id){
-		return this._repositorioCategoria.findById(id);
+	public Categoria obterPorId(Long id){
+		return _repositorioCategoria.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Categoria não encontrada pelo ID:" + id));
 	}
 	
 	public List<Categoria> obterPorNome(String nome){
-		return this._repositorioCategoria.findByNomeContaining(nome);
+		List<Categoria> categorias = _repositorioCategoria.findByNomeContaining(nome);
+		if (categorias.isEmpty())
+			throw new ResourceNotFoundException("Categoria não encontrada pelo nome:" + nome);
+		return categorias;
 	}
 	
 	public ResponseEntity<Categoria> adicionar(Categoria categoria) {
 		categoria.setId(null);
-		var adicionado = this._repositorioCategoria.save(categoria);
+		var adicionado = _repositorioCategoria.save(categoria);
 		return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
 	}
 	
