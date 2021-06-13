@@ -137,7 +137,7 @@ public class PedidoService {
 							+ "<div style=\"color:#062035; background-color: white;\">"
 							+ "Detalhes da compra</div>"+exibirProdutosNoPedido(pedido)+""
 									+ "<div style=\"color:white; background-color: #062035;\">"
-									+ "TOTAL DA COMPRA: "+pedido.getValorTotalDoPedido()+"</div>"
+									+ "<strong>TOTAL DA COMPRA: R$"+pedido.getValorTotalDoPedido()+"</strong></div>"
 											+ "<div style=\"color:white; background-color: #062035;\">"
 											+ "Date de entrega prevista: "+calculaDataDeEntrega()+"</div>"
 											+ "</body>"
