@@ -1,7 +1,6 @@
 package br.com.serratecEcommerce.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.serratecEcommerce.model.Produto;
+import br.com.serratecEcommerce.model.ProdutoRequest;
 import br.com.serratecEcommerce.service.ProdutoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -51,8 +51,8 @@ public class ProdutoController {
 	
 	@ApiOperation(value = "Adiciona um produto")
 	@PostMapping
-	public ResponseEntity<Produto> adicionar(@RequestBody Produto produto){
-        return _servicoProduto.adicionar(produto);
+	public ResponseEntity<Produto> adicionar(@RequestBody ProdutoRequest produtoRequest){
+        return _servicoProduto.adicionar(produtoRequest);
 	}
 	
 	@ApiOperation(value = "Adiciona uma imagem ao produto")
@@ -64,8 +64,8 @@ public class ProdutoController {
 	
 	@ApiOperation(value = "Atualiza um produto existente")
 	@PutMapping("/id/{id}")
-	 public Produto atualizar(@PathVariable(value = "id") Long id, @RequestBody Produto produto) {
-         return _servicoProduto.atualizar(id, produto);
+	 public Produto atualizar(@PathVariable(value = "id") Long id, @RequestBody ProdutoRequest produtoRequest) {
+         return _servicoProduto.atualizar(id, produtoRequest);
 	 }
 
 	 @ApiOperation(value = "Deleta um produto existente")
