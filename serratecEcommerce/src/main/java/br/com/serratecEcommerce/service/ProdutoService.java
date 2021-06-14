@@ -55,10 +55,14 @@ public class ProdutoService {
 				throw new ResourceNotFoundException("Categoria não encontrada pelo ID:" + categoriaId);
 			produto.setCategoria(categoria.get());
 		}
-		produto.setNome(produtoRequest.getNome());
-		produto.setDescricao(produtoRequest.getDescricao());
-		produto.setPreco(produtoRequest.getPreco());
-		produto.setQuantidadeEmEstoque(produtoRequest.getQuantidadeEmEstoque());
+		if (produtoRequest.getNome() != null)
+			produto.setNome(produtoRequest.getNome());
+		if (produtoRequest.getDescricao() != null)
+			produto.setDescricao(produtoRequest.getDescricao());
+		if (produtoRequest.getPreco() != null)
+			produto.setPreco(produtoRequest.getPreco());
+		if (produtoRequest.getQuantidadeEmEstoque() != null)
+			produto.setQuantidadeEmEstoque(produtoRequest.getQuantidadeEmEstoque());
 		this.validarProduto(produto);
 		produto.setId(null);
 		produto.setDataDeCadastroDoProduto(new Date());
@@ -67,8 +71,8 @@ public class ProdutoService {
 	}
 	
 	public ResponseEntity<Produto> adicionarImagemAoProduto(Long id, MultipartFile imagem){
-		var produto = _repositorioProduto.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrado pelo ID:" + id));
-		var enderecoImagem = servicoUpload.salvar("/img", imagem);
+		Produto produto = _repositorioProduto.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrado pelo ID:" + id));
+		String enderecoImagem = servicoUpload.salvar("/img", imagem);
 		produto.setImagem(enderecoImagem);
 		var atualizado = _repositorioProduto.save(produto);
 		return new ResponseEntity<>(atualizado, HttpStatus.CREATED);
@@ -83,10 +87,14 @@ public class ProdutoService {
 				throw new ResourceNotFoundException("Categoria não encontrada pelo ID:" + categoriaId);
 			produto.setCategoria(categoria.get());
 		}
-		produto.setNome(produtoRequest.getNome());
-		produto.setDescricao(produtoRequest.getDescricao());
-		produto.setPreco(produtoRequest.getPreco());
-		produto.setQuantidadeEmEstoque(produtoRequest.getQuantidadeEmEstoque());
+		if (produtoRequest.getNome() != null)
+			produto.setNome(produtoRequest.getNome());
+		if (produtoRequest.getDescricao() != null)
+			produto.setDescricao(produtoRequest.getDescricao());
+		if (produtoRequest.getPreco() != null)
+			produto.setPreco(produtoRequest.getPreco());
+		if (produtoRequest.getQuantidadeEmEstoque() != null)
+			produto.setQuantidadeEmEstoque(produtoRequest.getQuantidadeEmEstoque());
  		this.validarProduto(produto);
  		produto.setId(id);
         return this._repositorioProduto.save(produto);

@@ -56,7 +56,7 @@ public class ProdutoController {
 	}
 	
 	@ApiOperation(value = "Adiciona uma imagem ao produto")
-	@PostMapping("/imagem/{id}")
+	@PutMapping("/imagem/{id}")
 	public ResponseEntity<Produto> adicionarImagemAoProduto(@PathVariable(value = "id") Long id,
 															@RequestBody MultipartFile imagem){
         return _servicoProduto.adicionarImagemAoProduto(id, imagem);
