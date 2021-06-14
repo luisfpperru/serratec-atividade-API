@@ -20,6 +20,7 @@ import br.com.serratecEcommerce.model.exception.ResourceNotFoundException;
 import br.com.serratecEcommerce.repository.ClienteRepository;
 import br.com.serratecEcommerce.repository.PedidoRepository;
 import br.com.serratecEcommerce.repository.ProdutoRepository;
+import br.com.serratecEcommerce.util.FormataData;
 
 @Service
 public class PedidoService {
@@ -58,10 +59,12 @@ public class PedidoService {
 			var cliente = _repositorioCliente.findById(clienteId).orElseThrow( ()-> new ResourceNotFoundException("Cliente não encontrado(a) pelo ID:" + clienteId));
  			pedido.setCliente(cliente);
 		}
+		pedido.setNumeroDoPedido( (int) (Math.random()*((999999- 100000) + 1)) + 100000);
 		pedido.setStatus(pedidoRequest.getStatus());
 		calcularValorTotal(pedido);
 		pedido.setDataDoPedido(new Date());
 		var adicionado = this._repositorioPedido.save(pedido);
+		checarPedidoFinalizado(adicionado);
         return new ResponseEntity<>(adicionado, HttpStatus.CREATED);
 	}
 	
@@ -122,11 +125,11 @@ public class PedidoService {
 							+ "<h2>Sua compra foi efetuada com sucesso!</h2>"
 							+ " <br></div>"
 							+ "<div style=\"color:#062035; background-color: white;\">"
-							+ "Detalhes da compra</div>"+exibirProdutosNoPedido(pedido)+""
+							+ "Detalhes da compra: Nº"+pedido.getNumeroDoPedido()+"</div>"+exibirProdutosNoPedido(pedido)+""
 									+ "<div style=\"color:white; background-color: #062035;\">"
 									+ "<strong>TOTAL DA COMPRA: R$"+pedido.getValorTotalDoPedido()+"</strong></div>"
 											+ "<div style=\"color:white; background-color: #062035;\">"
-											+ "Date de entrega prevista: "+calculaDataDeEntrega()+"</div>"
+											+ "Date de entrega prevista: "+ calculaDataDeEntrega()+"</div>"
 											+ "</body>"
 											+ "</html>";
 
@@ -137,14 +140,14 @@ public class PedidoService {
 			_serviceEmail.enviarHtml(email);
 		}
 	}
-	 private Date calculaDataDeEntrega() {
-		 return new Date(new Date().getTime() + 5*24*3600*1000); // 5 dias * 24 horas * 3600 segundos * 1000 milisegundos
+	 private String calculaDataDeEntrega() {
+		 return FormataData.formatarDataPadraoBrasil(new Date(new Date().getTime() + 5*24*3600*1000)); // 5 dias * 24 horas * 3600 segundos * 1000 milisegundos
 	 }
 	 private String exibirProdutosNoPedido(Pedido pedido) {
 		String lista = "";
 		if (!pedido.getProdutos().isEmpty()) {
 			for( Produto produto: pedido.getProdutos())
-        		lista += String.format("<br>  %s  %s  %s  %s",produto.getNome(),produto.getPreco(),produto.getQuantidadeEmEstoque(),produto.getDescricao());
+        		lista += String.format("<br>  %s:  R$%s - %s",produto.getNome(),produto.getPreco(),produto.getDescricao());
 		} 
 		return lista;
 	 }

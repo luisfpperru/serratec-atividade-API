@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.serratec</groupId>
 	<artifactId>serratecEcommerce</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>serratecEcommerce</name>
 	<description>Projeto final de API</description>
 	<properties>

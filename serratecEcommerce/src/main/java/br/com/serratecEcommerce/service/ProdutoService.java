@@ -2,7 +2,6 @@ package br.com.serratecEcommerce.service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import br.com.serratecEcommerce.model.Categoria;
 import br.com.serratecEcommerce.model.Produto;
 import br.com.serratecEcommerce.model.exception.ResourceBadRequestException;
 import br.com.serratecEcommerce.model.exception.ResourceNotFoundException;
@@ -23,10 +21,7 @@ public class ProdutoService {
 
 	@Autowired
 	private ProdutoRepository _repositorioProduto;
-	
-	@Autowired
-	private CategoriaRepository _repositorioCategoria;
-	
+		
 	@Autowired
 	private UploadService servicoUpload;
 	
