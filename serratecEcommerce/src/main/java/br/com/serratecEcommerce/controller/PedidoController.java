@@ -1,7 +1,6 @@
 package br.com.serratecEcommerce.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +39,7 @@ public class PedidoController {
 
 	@ApiOperation(value = "Retorna um pedido pelo ID")
 	@GetMapping("/id/{id}")
-	public Optional<Pedido> obterPorId(@PathVariable(value = "id") Long id){
+	public Pedido obterPorId(@PathVariable(value = "id") Long id){
 		return _servicoPedido.obterPorId(id);
 	}
 	

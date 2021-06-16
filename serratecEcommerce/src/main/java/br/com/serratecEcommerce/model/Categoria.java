@@ -17,7 +17,7 @@ import javax.persistence.Table;
 public class Categoria {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gerator_categoria")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator_categoria")
 	private Long id;
 	
 	@Column( nullable = false)

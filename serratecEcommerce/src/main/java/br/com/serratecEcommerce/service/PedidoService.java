@@ -41,8 +41,8 @@ public class PedidoService {
 		return this._repositorioPedido.findAll();
 	}
 	
-	public Optional<Pedido> obterPorId(Long id){
-		return this._repositorioPedido.findById(id);
+	public Pedido obterPorId(Long id){
+		return this._repositorioPedido.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Cliente não encontrado(a) pelo ID:" + id));
 	}
 	
 	public ResponseEntity<Pedido> adicionar(PedidoRequest pedidoRequest){

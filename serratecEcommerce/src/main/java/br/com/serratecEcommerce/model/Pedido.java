@@ -22,10 +22,10 @@ import javax.persistence.Table;
 public class Pedido {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gerator_pedido")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator_pedido")
 	private Long id;
 	
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gerator_nro_pedido")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator_nro_pedido")
 	private Integer numeroDoPedido;
 		
 	private Double valorTotalDoPedido;

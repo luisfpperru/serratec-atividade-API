@@ -14,7 +14,7 @@ import javax.persistence.Table;
 public class Endereco {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gerator_endereco")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator_endereco")
 	private Long id;
 	
 	@Column( nullable = false)

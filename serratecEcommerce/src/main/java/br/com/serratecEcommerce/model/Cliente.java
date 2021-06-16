@@ -29,7 +29,7 @@ public class Cliente implements UserDetails{
 	private static final long serialVersionUID = 2683544335737374949L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gerator_cliente")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator_cliente")
 	private Long id;
 	
 	@Column( nullable = false, unique = true)
